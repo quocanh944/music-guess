@@ -1,6 +1,7 @@
 /**
  * NGỌT DISCOGRAPHY & SONG DATABASE
- * Categorized strictly by YouTube & Streaming View / Listen Counts
+ * Sourced directly from Official YouTube Channel @Ngọt-o9k
+ * Ranked by Official YouTube View Counts
  */
 export const ALBUMS = {
   ngot2016: {
@@ -49,8 +50,8 @@ export const DIFFICULTY_LEVELS = [
   {
     id: 'easy',
     label: 'Easy',
-    subLabel: '> 10M lượt xem',
-    viewRange: '10M - 50M+ views',
+    subLabel: '>= 10M views',
+    viewRange: '>= 10M views (Quốc dân)',
     color: '#22c55e',
     bgClass: 'bg-green-500/20',
     textClass: 'text-green-400',
@@ -60,8 +61,8 @@ export const DIFFICULTY_LEVELS = [
   {
     id: 'medium',
     label: 'Medium',
-    subLabel: '3M - 10M lượt xem',
-    viewRange: '3M - 10M views',
+    subLabel: '3M - 10M views',
+    viewRange: '3M - 10M views (Hit lớn)',
     color: '#eab308',
     bgClass: 'bg-yellow-500/20',
     textClass: 'text-yellow-400',
@@ -71,8 +72,8 @@ export const DIFFICULTY_LEVELS = [
   {
     id: 'hard',
     label: 'Hard',
-    subLabel: '1M - 3M lượt xem',
-    viewRange: '1M - 3M views',
+    subLabel: '1M - 3M views',
+    viewRange: '1M - 3M views (Kẹo Con)',
     color: '#f97316',
     bgClass: 'bg-orange-500/20',
     textClass: 'text-orange-400',
@@ -82,8 +83,8 @@ export const DIFFICULTY_LEVELS = [
   {
     id: 'expert',
     label: 'Expert',
-    subLabel: '300K - 1M lượt xem',
-    viewRange: '300K - 1M views',
+    subLabel: '400K - 1M views',
+    viewRange: '400K - 1M views (Fan cứng)',
     color: '#ef4444',
     bgClass: 'bg-red-500/20',
     textClass: 'text-red-400',
@@ -93,8 +94,8 @@ export const DIFFICULTY_LEVELS = [
   {
     id: 'impossible',
     label: 'Impossible',
-    subLabel: '< 300K lượt xem',
-    viewRange: '< 300K views',
+    subLabel: '< 400K views',
+    viewRange: '< 400K views (Độc bản)',
     color: '#a855f7',
     bgClass: 'bg-purple-500/20',
     textClass: 'text-purple-400',
@@ -106,513 +107,401 @@ export const DIFFICULTY_LEVELS = [
 export const SNIPPET_DURATIONS = [0.1, 0.5, 2.0, 8.0, 15.0];
 
 export const SONGS = [
-  // --- EASY (Mega Hits: > 10M - 50M+ Views) ---
+  // --- EASY (>= 10M Views) ---
   {
-    id: 'em-dao-nay',
-    title: 'Em Dạo Này',
-    albumId: 'ngot2016',
+    id: 'cho-toi-lang-thang',
+    title: 'Cho Tôi Lang Thang (ft. Đen)',
+    albumId: 'singles',
     difficulty: 'easy',
-    views: '48.2M',
-    lyricSnippet: 'Em dạo này có còn xem phim một mình? Em dạo này có đồ ăn và shopping?...',
-    audioFile: 'assets/audio/em-dao-nay.mp3',
-    synthHook: {
-      tempo: 116,
-      melody: [
-        { note: 'E4', dur: 0.25 }, { note: 'G#4', dur: 0.25 }, { note: 'B4', dur: 0.5 },
-        { note: 'A4', dur: 0.5 }, { note: 'G#4', dur: 0.5 }, { note: 'F#4', dur: 0.5 },
-        { note: 'E4', dur: 1.0 }, { note: 'B3', dur: 0.5 }, { note: 'E4', dur: 1.0 }
-      ],
-      instrument: 'guitar'
-    }
+    views: '36.0M',
+    lyricSnippet: 'Cho tôi lang thang quên ngày tháng, cho tôi quên đi bao lo toan muộn phiền...',
+    audioFile: 'assets/audio/cho-toi-lang-thang.mp3'
   },
   {
     id: 'lan-cuoi',
     title: 'Lần Cuối',
     albumId: 'ngPrime2017',
     difficulty: 'easy',
-    views: '34.5M',
-    lyricSnippet: 'Lần cuối, đi bên nhau cay đắng nhưng không đau. Bước hụt một bước ngã vào vực sâu...',
-    audioFile: 'assets/audio/lan-cuoi.mp3',
-    synthHook: {
-      tempo: 84,
-      melody: [
-        { note: 'C4', dur: 0.5 }, { note: 'E4', dur: 0.5 }, { note: 'G4', dur: 0.5 },
-        { note: 'A4', dur: 0.75 }, { note: 'G4', dur: 0.25 }, { note: 'E4', dur: 0.5 },
-        { note: 'D4', dur: 1.0 }, { note: 'C4', dur: 1.5 }
-      ],
-      instrument: 'piano'
-    }
+    views: '35.0M',
+    lyricSnippet: 'Lần cuối, đi bên nhau cay đắng nhưng không đau...',
+    audioFile: 'assets/audio/lan-cuoi.mp3'
   },
   {
-    id: 'cho-toi-di-theo',
-    title: 'Cho Tôi Đi Theo',
+    id: 'em-dao-nay',
+    title: 'Em Dạo Này',
     albumId: 'ngot2016',
     difficulty: 'easy',
-    views: '29.1M',
-    lyricSnippet: 'Cho tôi đi theo với, nơi anh đi về. Về nơi đẹp trời hơn, tràn đầy ước mơ...',
-    audioFile: 'assets/audio/cho-toi-di-theo.mp3',
-    synthHook: {
-      tempo: 128,
-      melody: [
-        { note: 'D4', dur: 0.25 }, { note: 'F#4', dur: 0.25 }, { note: 'A4', dur: 0.5 },
-        { note: 'B4', dur: 0.5 }, { note: 'A4', dur: 0.5 }, { note: 'F#4', dur: 0.5 },
-        { note: 'E4', dur: 0.5 }, { note: 'D4', dur: 1.0 }
-      ],
-      instrument: 'rockGuitar'
-    }
+    views: '23.0M',
+    lyricSnippet: 'Em dạo này có còn xem phim một mình? Em dạo này có đồ ăn và shopping?...',
+    audioFile: 'assets/audio/em-dao-nay.mp3'
+  },
+  {
+    id: 'chuyen-kenh',
+    title: 'Chuyển Kênh',
+    albumId: 'album3_2019',
+    difficulty: 'easy',
+    views: '15.0M',
+    lyricSnippet: 'Chuyển kênh khác xem có gì vui, tivi đang chiếu phim hài...',
+    audioFile: 'assets/audio/chuyen-kenh.mp3'
+  },
+  {
+    id: 'thay-chua',
+    title: 'Thấy Chưa',
+    albumId: 'gieo2022',
+    difficulty: 'easy',
+    views: '14.0M',
+    lyricSnippet: 'Thấy chưa, tôi đã bảo rồi mà. Cuộc đời này như một chuyến đi xa...',
+    audioFile: 'assets/audio/thay-chua.mp3'
   },
   {
     id: 'de-quen',
     title: 'Để Quên',
     albumId: 'album3_2019',
     difficulty: 'easy',
-    views: '16.8M',
+    views: '11.0M',
     lyricSnippet: 'Nắng qua hiên nhà, để quên ngày dài. Em nằm đây và tôi nằm đấy...',
-    audioFile: 'assets/audio/de-quen.mp3',
-    synthHook: {
-      tempo: 104,
-      melody: [
-        { note: 'F4', dur: 0.25 }, { note: 'A4', dur: 0.25 }, { note: 'C5', dur: 0.5 },
-        { note: 'Bb4', dur: 0.5 }, { note: 'A4', dur: 0.25 }, { note: 'G4', dur: 0.5 },
-        { note: 'F4', dur: 1.0 }
-      ],
-      instrument: 'funkyKeys'
-    }
-  },
-  {
-    id: 'may-khi',
-    title: 'Mấy Khi',
-    albumId: 'album3_2019',
-    difficulty: 'easy',
-    views: '11.4M',
-    lyricSnippet: 'Mấy khi ta lại được ngồi đây, hát cho nhau nghe những câu chuyện đời...',
-    audioFile: 'assets/audio/may-khi.mp3',
-    synthHook: {
-      tempo: 96,
-      melody: [
-        { note: 'G4', dur: 0.5 }, { note: 'B4', dur: 0.5 }, { note: 'D5', dur: 0.5 },
-        { note: 'C5', dur: 0.5 }, { note: 'B4', dur: 0.5 }, { note: 'A4', dur: 0.5 },
-        { note: 'G4', dur: 1.0 }
-      ],
-      instrument: 'guitar'
-    }
+    audioFile: 'assets/audio/de-quen.mp3'
   },
 
-  // --- MEDIUM (Popular Hits: 3M - 10M Views) ---
+  // --- MEDIUM (3M - 10M Views) ---
   {
-    id: 'ca-hoi',
-    title: 'Cá Hồi',
-    albumId: 'ngot2016',
+    id: 'het-thoi',
+    title: 'Hết Thời',
+    albumId: 'album3_2019',
     difficulty: 'medium',
-    views: '8.7M',
-    lyricSnippet: 'Bơi ngược dòng sông lên thượng nguồn, đi tìm nguồn gốc...',
-    audioFile: 'assets/audio/ca-hoi.mp3',
-    synthHook: {
-      tempo: 120,
-      melody: [
-        { note: 'E3', dur: 0.25 }, { note: 'E3', dur: 0.25 }, { note: 'G3', dur: 0.25 },
-        { note: 'A3', dur: 0.5 }, { note: 'B3', dur: 0.25 }, { note: 'D4', dur: 0.5 }
-      ],
-      instrument: 'bass'
-    }
+    views: '8.8M',
+    lyricSnippet: 'Tôi hết thời rồi các bạn ơi, hào quang xưa nay chỉ còn dĩ vãng...',
+    audioFile: 'assets/audio/het-thoi.mp3'
   },
   {
-    id: 'kho-bau',
-    title: 'Kho Báu',
-    albumId: 'ngPrime2017',
+    id: 'cho-toi-di-theo',
+    title: 'Cho Tôi Đi Theo',
+    albumId: 'ngot2016',
     difficulty: 'medium',
-    views: '7.2M',
-    lyricSnippet: 'Kho báu chôn sâu dưới lòng đất đá, người đời tranh nhau xới tìm...',
-    audioFile: 'assets/audio/kho-bau.mp3',
-    synthHook: {
-      tempo: 108,
-      melody: [
-        { note: 'A3', dur: 0.5 }, { note: 'C4', dur: 0.5 }, { note: 'E4', dur: 0.5 },
-        { note: 'D4', dur: 0.5 }, { note: 'C4', dur: 0.5 }, { note: 'A3', dur: 1.0 }
-      ],
-      instrument: 'rockGuitar'
-    }
+    views: '7.7M',
+    lyricSnippet: 'Cho tôi đi theo với, nơi anh đi về. Về nơi đẹp trời hơn, tràn đầy ước mơ...',
+    audioFile: 'assets/audio/cho-toi-di-theo.mp3'
+  },
+  {
+    id: 'cho',
+    title: 'Cho',
+    albumId: 'singles',
+    difficulty: 'medium',
+    views: '7.7M',
+    lyricSnippet: 'Cho tôi một ly nước ấm, cho tôi một ngày bình yên...',
+    audioFile: 'assets/audio/cho.mp3'
+  },
+  {
+    id: 'dot',
+    title: 'Đốt',
+    albumId: 'singles',
+    difficulty: 'medium',
+    views: '6.6M',
+    lyricSnippet: 'Đốt hết những kỷ niệm cũ, đốt hết những bức thư tình...',
+    audioFile: 'assets/audio/dot.mp3'
+  },
+  {
+    id: 'xanh',
+    title: 'Xanh',
+    albumId: 'ngot2016',
+    difficulty: 'medium',
+    views: '6.5M',
+    lyricSnippet: 'Bầu trời hôm nay thật xanh, cây lá ngoài vườn thật xanh...',
+    audioFile: 'assets/audio/xanh.mp3'
   },
   {
     id: 'ke-thu',
     title: 'Kẻ Thù',
     albumId: 'ngPrime2017',
     difficulty: 'medium',
-    views: '6.5M',
+    views: '6.0M',
     lyricSnippet: 'Kẻ thù của tôi, hãy ngồi xuống đây cạn một ly này...',
-    audioFile: 'assets/audio/ke-thu.mp3',
-    synthHook: {
-      tempo: 130,
-      melody: [
-        { note: 'F#4', dur: 0.25 }, { note: 'A4', dur: 0.25 }, { note: 'F#4', dur: 0.25 },
-        { note: 'E4', dur: 0.5 }, { note: 'D4', dur: 0.5 }, { note: 'F#4', dur: 1.0 }
-      ],
-      instrument: 'rockGuitar'
-    }
-  },
-  {
-    id: 'em-co-chac-khong',
-    title: 'Em Có Chắc Không?',
-    albumId: 'album3_2019',
-    difficulty: 'medium',
-    views: '5.8M',
-    lyricSnippet: 'Em có chắc không khi nói yêu tôi? Trái tim bơ vơ lạc loài giữa biển khơi...',
-    audioFile: 'assets/audio/em-co-chac-khong.mp3',
-    synthHook: {
-      tempo: 112,
-      melody: [
-        { note: 'Bb4', dur: 0.25 }, { note: 'D5', dur: 0.25 }, { note: 'F5', dur: 0.5 },
-        { note: 'Eb5', dur: 0.5 }, { note: 'D5', dur: 0.5 }, { note: 'C5', dur: 1.0 }
-      ],
-      instrument: 'funkyKeys'
-    }
-  },
-  {
-    id: 'thay-chua',
-    title: 'Thấy Chưa',
-    albumId: 'gieo2022',
-    difficulty: 'medium',
-    views: '5.1M',
-    lyricSnippet: 'Thấy chưa, tôi đã bảo rồi mà. Cuộc đời này như một chuyến đi xa...',
-    audioFile: 'assets/audio/thay-chua.mp3',
-    synthHook: {
-      tempo: 90,
-      melody: [
-        { note: 'D4', dur: 0.5 }, { note: 'G4', dur: 0.5 }, { note: 'F#4', dur: 0.5 },
-        { note: 'E4', dur: 0.5 }, { note: 'D4', dur: 1.0 }
-      ],
-      instrument: 'piano'
-    }
+    audioFile: 'assets/audio/ke-thu.mp3'
   },
   {
     id: 'em-trang-tri',
     title: 'Em Trang Trí',
     albumId: 'gieo2022',
     difficulty: 'medium',
-    views: '4.3M',
+    views: '5.9M',
     lyricSnippet: 'Em trang trí căn phòng của em bằng những bông hoa nhỏ...',
-    audioFile: 'assets/audio/em-trang-tri.mp3',
-    synthHook: {
-      tempo: 100,
-      melody: [
-        { note: 'C4', dur: 0.25 }, { note: 'E4', dur: 0.25 }, { note: 'G4', dur: 0.5 },
-        { note: 'B4', dur: 0.5 }, { note: 'C5', dur: 1.0 }
-      ],
-      instrument: 'funkyKeys'
-    }
+    audioFile: 'assets/audio/em-trang-tri.mp3'
   },
   {
-    id: 'khap-xung-quanh',
-    title: 'Khắp Xung Quanh',
-    albumId: 'ngot2016',
+    id: 'may-khi',
+    title: 'Mấy Khi',
+    albumId: 'album3_2019',
     difficulty: 'medium',
-    views: '3.9M',
-    lyricSnippet: 'Khắp xung quanh ta xe cộ ngược xuôi, người người hối hả...',
-    audioFile: 'assets/audio/khap-xung-quanh.mp3',
-    synthHook: {
-      tempo: 124,
-      melody: [
-        { note: 'A3', dur: 0.25 }, { note: 'C4', dur: 0.25 }, { note: 'E4', dur: 0.5 },
-        { note: 'G4', dur: 0.5 }, { note: 'A4', dur: 1.0 }
-      ],
-      instrument: 'rockGuitar'
-    }
+    views: '5.8M',
+    lyricSnippet: 'Mấy khi ta lại được ngồi đây, hát cho nhau nghe những câu chuyện đời...',
+    audioFile: 'assets/audio/may-khi.mp3'
+  },
+  {
+    id: 'nut',
+    title: 'Nứt',
+    albumId: 'album3_2019',
+    difficulty: 'medium',
+    views: '5.7M',
+    lyricSnippet: 'Đôi chân đôi tay đôi mắt trái tim...',
+    audioFile: 'assets/audio/nut.mp3'
+  },
+  {
+    id: 'em-co-chac-khong',
+    title: 'Em Có Chắc Không?',
+    albumId: 'album3_2019',
+    difficulty: 'medium',
+    views: '4.7M',
+    lyricSnippet: 'Em có chắc không khi nói yêu tôi? Trái tim bơ vơ lạc loài giữa biển khơi...',
+    audioFile: 'assets/audio/em-co-chac-khong.mp3'
+  },
+  {
+    id: 'chuyen-do-dang',
+    title: 'Chuyện Dở Dang',
+    albumId: 'singles',
+    difficulty: 'medium',
+    views: '4.1M',
+    lyricSnippet: 'Những chuyện dở dang của tuổi trẻ, những ước mơ chưa thành...',
+    audioFile: 'assets/audio/chuyen-do-dang.mp3'
+  },
+  {
+    id: 'bartender',
+    title: 'Bartender',
+    albumId: 'singles',
+    difficulty: 'medium',
+    views: '4.0M',
+    lyricSnippet: 'Này chàng pha chế, cho tôi một ly rượu mạnh...',
+    audioFile: 'assets/audio/bartender.mp3'
+  },
+  {
+    id: 'hay-la',
+    title: 'Hay Là',
+    albumId: 'singles',
+    difficulty: 'medium',
+    views: '3.0M',
+    lyricSnippet: 'Hay là ta cùng nhau đi đến một nơi thật xa...',
+    audioFile: 'assets/audio/hay-la.mp3'
+  },
+
+  // --- HARD (1M - 3M Views) ---
+  {
+    id: 'mo-lam-ma',
+    title: 'Mơ Làm Ma (ft. Thỏ Trauma)',
+    albumId: 'singles',
+    difficulty: 'hard',
+    views: '2.8M',
+    lyricSnippet: 'Đêm nằm mơ thấy mình làm ma, bay lượn trên những mái nhà...',
+    audioFile: 'assets/audio/mo-lam-ma.mp3'
+  },
+  {
+    id: 'khong-lam-gi',
+    title: 'Không Làm Gì',
+    albumId: 'singles',
+    difficulty: 'hard',
+    views: '2.5M',
+    lyricSnippet: 'Hôm nay tôi không làm gì cả, chỉ ngồi ngắm mây trôi...',
+    audioFile: 'assets/audio/khong-lam-gi.mp3'
+  },
+  {
+    id: 'mot-ngay-khong-mua',
+    title: 'Một Ngày Không Mưa',
+    albumId: 'ngPrime2017',
+    difficulty: 'hard',
+    views: '2.4M',
+    lyricSnippet: 'Một ngày không mưa bầu trời trong xanh, ta dắt tay nhau qua từng con phố...',
+    audioFile: 'assets/audio/mot-ngay-khong-mua.mp3'
+  },
+  {
+    id: 'gia-vo',
+    title: 'Giả Vờ',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '2.0M',
+    lyricSnippet: 'Giả vờ như ta chưa từng quen, giả vờ như chưa từng yêu...',
+    audioFile: 'assets/audio/gia-vo.mp3'
+  },
+  {
+    id: 'tim-nguoi-nha',
+    title: 'Tìm Người Nhà',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '2.0M',
+    lyricSnippet: 'Tìm người nhà đi lạc giữa thành phố đông đúc...',
+    audioFile: 'assets/audio/tim-nguoi-nha.mp3'
+  },
+  {
+    id: 'meu-mao',
+    title: 'Mếu Máo (T.T)',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '1.9M',
+    lyricSnippet: 'Khuôn mặt mếu máo như đứa trẻ con...',
+    audioFile: 'assets/audio/meu-mao.mp3'
+  },
+  {
+    id: 'di-tru-dong',
+    title: 'Đi Trú Đông',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '1.6M',
+    lyricSnippet: 'Mùa đông lạnh giá ta đi tìm hơi ấm...',
+    audioFile: 'assets/audio/di-tru-dong.mp3'
+  },
+  {
+    id: 'drama-queen',
+    title: 'Drama Queen',
+    albumId: 'singles',
+    difficulty: 'hard',
+    views: '1.5M',
+    lyricSnippet: 'Nữ hoàng của những vở kịch cuộc đời...',
+    audioFile: 'assets/audio/drama-queen.mp3'
+  },
+  {
+    id: 'thap-huong-hoa-vang',
+    title: 'Thắp Hương Hoá Vàng',
+    albumId: 'singles',
+    difficulty: 'hard',
+    views: '1.5M',
+    lyricSnippet: 'Khói hương nghi ngút những ngày cuối năm...',
+    audioFile: 'assets/audio/thap-huong-hoa-vang.mp3'
+  },
+  {
+    id: 'vi-ai',
+    title: 'Vì Ai',
+    albumId: 'singles',
+    difficulty: 'hard',
+    views: '1.4M',
+    lyricSnippet: 'Vì ai ta thức trắng bao đêm, vì ai lệ rơi hoen bờ mi...',
+    audioFile: 'assets/audio/vi-ai.mp3'
+  },
+  {
+    id: 'chuong-bao-thuc',
+    title: 'Chuông Báo Thức',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '1.3M',
+    lyricSnippet: 'Sáng rồi chuông reo giục ta thức dậy...',
+    audioFile: 'assets/audio/chuong-bao-thuc.mp3'
+  },
+  {
+    id: 'mau-den-trang',
+    title: 'Màu (Đen Trắng)',
+    albumId: 'album3_2019',
+    difficulty: 'hard',
+    views: '1.1M',
+    lyricSnippet: 'Thế giới chỉ có hai màu đen và trắng...',
+    audioFile: 'assets/audio/mau-den-trang.mp3'
+  },
+  {
+    id: 'ca-hoi',
+    title: 'Cá Hồi',
+    albumId: 'ngot2016',
+    difficulty: 'hard',
+    views: '1.0M',
+    lyricSnippet: 'Bơi ngược dòng sông lên thượng nguồn, đi tìm nguồn gốc...',
+    audioFile: 'assets/audio/ca-hoi.mp3'
+  },
+
+  // --- EXPERT (400K - 1M Views) ---
+  {
+    id: 'meo-hoang',
+    title: 'Mèo Hoang',
+    albumId: 'ngPrime2017',
+    difficulty: 'expert',
+    views: '950K',
+    lyricSnippet: 'Chú mèo hoang lang thang góc phố vắng...',
+    audioFile: 'assets/audio/meo-hoang.mp3'
+  },
+  {
+    id: 've-di-thien-duong',
+    title: 'Vé Đi Thiên Đường',
+    albumId: 'album3_2019',
+    difficulty: 'expert',
+    views: '950K',
+    lyricSnippet: 'Một tấm vé một chiều đi tới thiên đường...',
+    audioFile: 'assets/audio/ve-di-thien-duong.mp3'
+  },
+  {
+    id: 'be',
+    title: '(Bé)',
+    albumId: 'album3_2019',
+    difficulty: 'expert',
+    views: '807K',
+    lyricSnippet: 'Bé con ơi ngủ ngoan trong nôi êm...',
+    audioFile: 'assets/audio/be.mp3'
   },
   {
     id: 'be-cool',
     title: 'Be Cool',
     albumId: 'ngot2016',
-    difficulty: 'medium',
-    views: '3.2M',
-    lyricSnippet: 'Just be cool, baby be cool. Cuộc sống xô bồ xin đừng cáu gắt...',
-    audioFile: 'assets/audio/be-cool.mp3',
-    synthHook: {
-      tempo: 110,
-      melody: [
-        { note: 'G4', dur: 0.25 }, { note: 'A#4', dur: 0.25 }, { note: 'C5', dur: 0.5 },
-        { note: 'D5', dur: 0.5 }, { note: 'C5', dur: 0.5 }
-      ],
-      instrument: 'funkyKeys'
-    }
+    difficulty: 'expert',
+    views: '742K',
+    lyricSnippet: 'Just be cool, baby be cool...',
+    audioFile: 'assets/audio/be-cool.mp3'
   },
-
-  // --- HARD (Fan Favorites: 1M - 3M Views) ---
   {
-    id: 'mau-doi-thoai-ngan',
-    title: 'Mẩu Đối Thoại Ngắn',
+    id: 'kho-bau',
+    title: 'Kho Báu',
     albumId: 'ngPrime2017',
-    difficulty: 'hard',
-    views: '2.6M',
-    lyricSnippet: 'Ta chào nhau chưa? Ừ thì ta chào nhau rồi...',
-    audioFile: 'assets/audio/mau-doi-thoai-ngan.mp3',
-    synthHook: {
-      tempo: 98,
-      melody: [
-        { note: 'C4', dur: 0.5 }, { note: 'F4', dur: 0.5 }, { note: 'E4', dur: 0.5 },
-        { note: 'D4', dur: 0.5 }, { note: 'C4', dur: 1.0 }
-      ],
-      instrument: 'piano'
-    }
+    difficulty: 'expert',
+    views: '731K',
+    lyricSnippet: 'Kho báu chôn sâu dưới lòng đất đá...',
+    audioFile: 'assets/audio/kho-bau.mp3'
   },
   {
-    id: 'chuyen-kenh',
-    title: 'Chuyển Kênh',
-    albumId: 'album3_2019',
-    difficulty: 'hard',
-    views: '2.2M',
-    lyricSnippet: 'Chuyển kênh khác xem có gì vui, tivi đang chiếu phim hài...',
-    audioFile: 'assets/audio/chuyen-kenh.mp3',
-    synthHook: {
-      tempo: 132,
-      melody: [
-        { note: 'B3', dur: 0.25 }, { note: 'D4', dur: 0.25 }, { note: 'F#4', dur: 0.5 },
-        { note: 'A4', dur: 0.5 }, { note: 'G4', dur: 0.5 }
-      ],
-      instrument: 'rockGuitar'
-    }
-  },
-  {
-    id: 'het-thoi',
-    title: 'Hết Thời',
-    albumId: 'album3_2019',
-    difficulty: 'hard',
-    views: '1.9M',
-    lyricSnippet: 'Tôi hết thời rồi các bạn ơi, hào quang xưa nay chỉ còn dĩ vãng...',
-    audioFile: 'assets/audio/het-thoi.mp3',
-    synthHook: {
-      tempo: 105,
-      melody: [
-        { note: 'A3', dur: 0.5 }, { note: 'D4', dur: 0.5 }, { note: 'C#4', dur: 0.5 },
-        { note: 'B3', dur: 0.5 }, { note: 'A3', dur: 1.0 }
-      ],
-      instrument: 'piano'
-    }
-  },
-  {
-    id: 'ru-con-bang-ngua-go',
-    title: 'Ru Con Bằng Ngựa Gỗ',
-    albumId: 'album3_2019',
-    difficulty: 'hard',
-    views: '1.6M',
-    lyricSnippet: 'Ngựa gỗ ru con ngủ say, ngày mai con lớn con bay khắp trời...',
-    audioFile: 'assets/audio/ru-con-bang-ngua-go.mp3',
-    synthHook: {
-      tempo: 80,
-      melody: [
-        { note: 'E4', dur: 0.5 }, { note: 'G4', dur: 0.5 }, { note: 'A4', dur: 0.5 },
-        { note: 'B4', dur: 1.0 }, { note: 'A4', dur: 0.5 }, { note: 'G4', dur: 1.0 }
-      ],
-      instrument: 'guitar'
-    }
-  },
-  {
-    id: 'quan-diem',
-    title: 'Quan Điểm',
+    id: 'khap-xung-quanh',
+    title: 'Khắp Xung Quanh',
     albumId: 'ngot2016',
-    difficulty: 'hard',
-    views: '1.7M',
-    lyricSnippet: 'Mỗi người một quan điểm, ai đúng ai sai đâu cần chứng minh...',
-    audioFile: 'assets/audio/quan-diem.mp3',
-    synthHook: {
-      tempo: 118,
-      melody: [
-        { note: 'D4', dur: 0.25 }, { note: 'F4', dur: 0.25 }, { note: 'G4', dur: 0.5 },
-        { note: 'A4', dur: 0.5 }, { note: 'D5', dur: 0.5 }
-      ],
-      instrument: 'rockGuitar'
-    }
+    difficulty: 'expert',
+    views: '613K',
+    lyricSnippet: 'Khắp xung quanh ta xe cộ ngược xuôi...',
+    audioFile: 'assets/audio/khap-xung-quanh.mp3'
   },
   {
-    id: 'cho-em-di-lam',
-    title: 'Cho Em Đi Làm',
-    albumId: 'singles',
-    difficulty: 'hard',
-    views: '1.4M',
-    lyricSnippet: 'Cho em đi làm kiếm tiền mua sữa, cho em đi làm nuôi sống ước mơ...',
-    audioFile: 'assets/audio/cho-em-di-lam.mp3',
-    synthHook: {
-      tempo: 115,
-      melody: [
-        { note: 'F4', dur: 0.25 }, { note: 'G4', dur: 0.25 }, { note: 'A4', dur: 0.5 },
-        { note: 'C5', dur: 0.5 }, { note: 'D5', dur: 1.0 }
-      ],
-      instrument: 'funkyKeys'
-    }
-  },
-
-  // --- EXPERT (Deep Cuts: 300K - 1M Views) ---
-  {
-    id: 'nut',
-    title: 'Nứt',
+    id: 'du-bao-thoi-tiet',
+    title: 'Dự Báo Thời Tiết',
     albumId: 'album3_2019',
     difficulty: 'expert',
-    views: '840K',
-    lyricSnippet: 'Vết nứt trên tường, vết nứt trong tâm trí người nghệ sĩ...',
-    audioFile: 'assets/audio/nut.mp3',
-    synthHook: {
-      tempo: 140,
-      melody: [
-        { note: 'E3', dur: 0.25 }, { note: 'B3', dur: 0.25 }, { note: 'E4', dur: 0.25 },
-        { note: 'G4', dur: 0.5 }, { note: 'F#4', dur: 0.5 }, { note: 'E4', dur: 0.5 }
-      ],
-      instrument: 'rockGuitar'
-    }
+    views: '440K',
+    lyricSnippet: 'Sau đây là bản tin dự báo thời tiết...',
+    audioFile: 'assets/audio/du-bao-thoi-tiet.mp3'
   },
   {
-    id: 'su-dau-hang',
-    title: 'Sự Đầu Hàng',
-    albumId: 'album3_2019',
-    difficulty: 'expert',
-    views: '710K',
-    lyricSnippet: 'Tôi xin đầu hàng trước vẻ đẹp của tự nhiên, trước sự đổi thay của thời gian...',
-    audioFile: 'assets/audio/su-dau-hang.mp3',
-    synthHook: {
-      tempo: 82,
-      melody: [
-        { note: 'Ab3', dur: 0.5 }, { note: 'C4', dur: 0.5 }, { note: 'Eb4', dur: 0.5 },
-        { note: 'F4', dur: 0.75 }, { note: 'Eb4', dur: 0.25 }, { note: 'C4', dur: 1.0 }
-      ],
-      instrument: 'piano'
-    }
-  },
-  {
-    id: 'do-ky',
-    title: 'Đố Kỵ',
+    id: 'xin-cho-toi',
+    title: 'Xin Cho Tôi',
     albumId: 'ngPrime2017',
     difficulty: 'expert',
-    views: '620K',
-    lyricSnippet: 'Lòng đố kỵ gặm nhấm tâm can người ta từng ngày...',
-    audioFile: 'assets/audio/do-ky.mp3',
-    synthHook: {
-      tempo: 135,
-      melody: [
-        { note: 'B3', dur: 0.25 }, { note: 'D4', dur: 0.25 }, { note: 'F#4', dur: 0.25 },
-        { note: 'A4', dur: 0.25 }, { note: 'C5', dur: 0.5 }, { note: 'B4', dur: 0.5 }
-      ],
-      instrument: 'rockGuitar'
-    }
-  },
-  {
-    id: 'gieo',
-    title: 'Gieo',
-    albumId: 'gieo2022',
-    difficulty: 'expert',
-    views: '580K',
-    lyricSnippet: 'Gieo một hạt mầm xuống mảnh đất khô cằn, đợi ngày đơm hoa kết trái...',
-    audioFile: 'assets/audio/gieo.mp3',
-    synthHook: {
-      tempo: 102,
-      melody: [
-        { note: 'A3', dur: 0.5 }, { note: 'E4', dur: 0.5 }, { note: 'G4', dur: 0.5 },
-        { note: 'F#4', dur: 0.5 }, { note: 'E4', dur: 1.0 }
-      ],
-      instrument: 'psychedelicSynth'
-    }
-  },
-  {
-    id: 'chao-he',
-    title: 'Chào Hè',
-    albumId: 'gieo2022',
-    difficulty: 'expert',
-    views: '460K',
-    lyricSnippet: 'Chào mùa hè rực rỡ, tiếng ve kêu râm ran trên cành phượng vĩ...',
-    audioFile: 'assets/audio/chao-he.mp3',
-    synthHook: {
-      tempo: 114,
-      melody: [
-        { note: 'C4', dur: 0.25 }, { note: 'F4', dur: 0.25 }, { note: 'A4', dur: 0.5 },
-        { note: 'Bb4', dur: 0.5 }, { note: 'C5', dur: 0.5 }
-      ],
-      instrument: 'funkyKeys'
-    }
+    views: '421K',
+    lyricSnippet: 'Xin cho tôi một lần được làm lại...',
+    audioFile: 'assets/audio/xin-cho-toi.mp3'
   },
 
-  // --- IMPOSSIBLE (Avant-garde / Outros: < 300K Views) ---
+  // --- IMPOSSIBLE (< 400K Views) ---
   {
-    id: 'mau-do-khong-bao-gio',
-    title: 'Màu Đỏ (Không Bao Giờ)',
-    albumId: 'album3_2019',
+    id: 'a-oi',
+    title: 'À Ơi',
+    albumId: 'ngot2016',
     difficulty: 'impossible',
-    views: '240K',
-    lyricSnippet: 'Màu đỏ của máu, màu đỏ của hoàng hôn không bao giờ tàn phai...',
-    audioFile: 'assets/audio/mau-do-khong-bao-gio.mp3',
-    synthHook: {
-      tempo: 76,
-      melody: [
-        { note: 'C#3', dur: 0.75 }, { note: 'G#3', dur: 0.5 }, { note: 'C#4', dur: 0.75 },
-        { note: 'F4', dur: 1.0 }, { note: 'E4', dur: 0.5 }
-      ],
-      instrument: 'psychedelicSynth'
-    }
+    views: '356K',
+    lyricSnippet: 'À ơi khúc ca ru con thời thơ ấu...',
+    audioFile: 'assets/audio/a-oi.mp3'
   },
   {
-    id: 'chuong-bao-dong-2',
-    title: 'Chuông Báo Động (Phần 2)',
-    albumId: 'album3_2019',
+    id: 'nhung-chuyen-phieu-luu',
+    title: 'Những Chuyến Phiêu Lưu',
+    albumId: 'ngot2016',
     difficulty: 'impossible',
-    views: '190K',
-    lyricSnippet: 'Ting ting chuông reo giật mình tỉnh giấc...',
-    audioFile: 'assets/audio/chuong-bao-dong-2.mp3',
-    synthHook: {
-      tempo: 160,
-      melody: [
-        { note: 'F#4', dur: 0.1 }, { note: 'F#4', dur: 0.1 }, { note: 'F#4', dur: 0.1 },
-        { note: 'A4', dur: 0.2 }, { note: 'C5', dur: 0.2 }, { note: 'F#4', dur: 0.2 }
-      ],
-      instrument: 'psychedelicSynth'
-    }
+    views: '192K',
+    lyricSnippet: 'Những chuyến phiêu lưu kỳ thú của tuổi thanh xuân...',
+    audioFile: 'assets/audio/nhung-chuyen-phieu-luu.mp3'
   },
   {
-    id: 'ban-giao-huong-so-5',
-    title: 'Bản Giao Hưởng Số 5',
-    albumId: 'gieo2022',
-    difficulty: 'impossible',
-    views: '165K',
-    lyricSnippet: 'Từng nốt nhạc giao hưởng hòa quyện trong không gian tĩnh mịch...',
-    audioFile: 'assets/audio/ban-giao-huong-so-5.mp3',
-    synthHook: {
-      tempo: 120,
-      melody: [
-        { note: 'G4', dur: 0.15 }, { note: 'G4', dur: 0.15 }, { note: 'G4', dur: 0.15 },
-        { note: 'Eb4', dur: 0.8 }, { note: 'F4', dur: 0.15 }, { note: 'F4', dur: 0.15 },
-        { note: 'F4', dur: 0.15 }, { note: 'D4', dur: 0.8 }
-      ],
-      instrument: 'rockGuitar'
-    }
-  },
-  {
-    id: 'mat-tich',
-    title: 'Mất Tích',
-    albumId: 'gieo2022',
-    difficulty: 'impossible',
-    views: '140K',
-    lyricSnippet: 'Một người vừa mất tích không để lại dấu vết...',
-    audioFile: 'assets/audio/mat-tich.mp3',
-    synthHook: {
-      tempo: 110,
-      melody: [
-        { note: 'D3', dur: 0.25 }, { note: 'F3', dur: 0.25 }, { note: 'Ab3', dur: 0.5 },
-        { note: 'B3', dur: 0.5 }, { note: 'D4', dur: 0.5 }
-      ],
-      instrument: 'bass'
-    }
-  },
-  {
-    id: 'keo',
-    title: 'Kẹo',
+    id: 'xanh-fingerstyle',
+    title: 'Xanh (Fingerstyle)',
     albumId: 'singles',
     difficulty: 'impossible',
-    views: '115K',
-    lyricSnippet: 'Ngọt như kẹo bông, tuổi thơ êm đềm trôi theo dòng sông...',
-    audioFile: 'assets/audio/keo.mp3',
-    synthHook: {
-      tempo: 100,
-      melody: [
-        { note: 'C5', dur: 0.25 }, { note: 'A4', dur: 0.25 }, { note: 'F4', dur: 0.25 },
-        { note: 'D4', dur: 0.5 }, { note: 'C4', dur: 1.0 }
-      ],
-      instrument: 'funkyKeys'
-    }
+    views: '155K',
+    lyricSnippet: 'Bản phối acoustic fingerstyle mộc mạc...',
+    audioFile: 'assets/audio/xanh-fingerstyle.mp3'
   }
 ];
 
