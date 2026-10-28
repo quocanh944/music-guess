@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: 🍬
+        - generic [ref=e6]:
+          - heading "KẸO CON" [level=1] [ref=e7]
+          - paragraph [ref=e8]: Đoán Nhạc Ngọt Band
+      - navigation [ref=e9]:
+        - button "🔥 5 Vòng Thử Thách" [ref=e10] [cursor=pointer]
+        - button "📅 Heardle Mỗi Ngày" [ref=e11] [cursor=pointer]
+        - button "🎲 Tự Luyện" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - button "Thống kê" [ref=e14] [cursor=pointer]
+        - button "Hướng dẫn" [ref=e17] [cursor=pointer]
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - button "Easy > 10M views" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23]: Easy
+        - generic [ref=e24]: "> 10M views"
+      - button "Medium 3M - 10M" [ref=e25] [cursor=pointer]:
+        - generic [ref=e26]: Medium
+        - generic [ref=e27]: 3M - 10M
+      - button "Hard 1M - 3M" [ref=e28] [cursor=pointer]:
+        - generic [ref=e29]: Hard
+        - generic [ref=e30]: 1M - 3M
+      - button "Expert 300K - 1M" [ref=e31] [cursor=pointer]:
+        - generic [ref=e32]: Expert
+        - generic [ref=e33]: 300K - 1M
+      - button "Impossible < 300K" [ref=e34] [cursor=pointer]:
+        - generic [ref=e35]: Impossible
+        - generic [ref=e36]: < 300K
+    - generic [ref=e44]:
+      - generic [ref=e45]: 0.1s
+      - generic [ref=e46]: 0.5s
+      - generic [ref=e47]: 2.0s
+      - generic [ref=e48]: 8.0s
+      - generic [ref=e49]: 15.0s
+    - generic [ref=e50]:
+      - button [ref=e52] [cursor=pointer]
+      - generic [ref=e55]:
+        - generic [ref=e56]: 0.1s
+        - generic [ref=e57]: Ấn nút để nghe đoạn nhạc
+    - 'textbox "Tìm tên bài hát của Ngọt (vd: Em Dạo Này, Lần Cuối...)" [ref=e60]'
+    - generic [ref=e61]:
+      - button "Bỏ qua (+0.5s)" [ref=e62] [cursor=pointer]
+      - button "ĐOÁN" [disabled] [ref=e66]
+  - generic:
+    - generic: ✅
+    - generic: Đã sao chép vào bộ nhớ tạm!
+  - contentinfo [ref=e69]:
+    - paragraph [ref=e70]:
+      - text: Dành riêng cho
+      - strong [ref=e71]: Kẹo Con
+      - text: 🍬 | Âm nhạc bởi
+      - strong [ref=e72]: Ngọt
+      - text: (2013 - 2024)

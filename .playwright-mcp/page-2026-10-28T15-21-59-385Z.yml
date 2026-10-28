@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: 🍬
+        - generic [ref=e6]:
+          - heading "KẸO CON" [level=1] [ref=e7]
+          - paragraph [ref=e8]: Đoán Nhạc Ngọt Band
+      - navigation [ref=e9]:
+        - button "🔥 5 Vòng Thử Thách" [ref=e10] [cursor=pointer]
+        - button "📅 Heardle Mỗi Ngày" [ref=e11] [cursor=pointer]
+        - button "🎲 Tự Luyện" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - button "Thống kê" [ref=e14] [cursor=pointer]
+        - button "Hướng dẫn" [ref=e17] [cursor=pointer]
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - button "Easy" [ref=e22] [cursor=pointer]
+      - button "Medium" [ref=e23] [cursor=pointer]
+      - button "Hard" [ref=e24] [cursor=pointer]
+      - button "Expert" [ref=e25] [cursor=pointer]
+      - button "Impossible" [ref=e26] [cursor=pointer]
+    - generic [ref=e34]:
+      - generic [ref=e35]: 0.1s
+      - generic [ref=e36]: 0.5s
+      - generic [ref=e37]: 2.0s
+      - generic [ref=e38]: 8.0s
+      - generic [ref=e39]: 15.0s
+    - generic [ref=e40]:
+      - button [ref=e42] [cursor=pointer]
+      - generic [ref=e45]:
+        - generic [ref=e46]: 0.1s
+        - generic [ref=e47]: Ấn nút để nghe đoạn nhạc
+    - 'textbox "Tìm tên bài hát của Ngọt (vd: Em Dạo Này, Lần Cuối...)" [ref=e50]'
+    - generic [ref=e51]:
+      - button "Bỏ qua (+0.5s)" [ref=e52] [cursor=pointer]
+      - button "ĐOÁN" [disabled] [ref=e56]
+  - generic:
+    - generic: ✅
+    - generic: Đã sao chép vào bộ nhớ tạm!
+  - contentinfo [ref=e59]:
+    - paragraph [ref=e60]:
+      - text: Dành riêng cho
+      - strong [ref=e61]: Kẹo Con
+      - text: 🍬 | Âm nhạc bởi
+      - strong [ref=e62]: Ngọt
+      - text: (2013 - 2024)

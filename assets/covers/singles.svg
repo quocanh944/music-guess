@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg_singles" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <radialGradient id="glow_singles" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="500" height="500" rx="24" fill="url(#bg_singles)" />
+  <circle cx="250" cy="240" r="180" fill="url(#glow_singles)" />
+  <circle cx="250" cy="220" r="100" fill="none" stroke="#06b6d4" stroke-width="4" stroke-opacity="0.6" />
+  <circle cx="250" cy="220" r="30" fill="#06b6d4" fill-opacity="0.5" />
+  <!-- Vinyl grooves -->
+  <circle cx="250" cy="220" r="70" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.3" />
+  <circle cx="250" cy="220" r="85" fill="none" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.3" />
+  <text x="250" y="380" font-family="'Inter', -apple-system, sans-serif" font-size="34" font-weight="900" fill="#e0f2fe" text-anchor="middle" letter-spacing="4">KẸO CON</text>
+  <text x="250" y="415" font-family="'Inter', -apple-system, sans-serif" font-size="16" font-weight="600" fill="#38bdf8" text-anchor="middle" letter-spacing="3">SINGLES &amp; EPs</text>
+</svg>

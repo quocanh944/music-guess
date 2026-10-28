@@ -1,0 +1,4 @@
+[     615ms] [WARNING] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation @ https://cdn.tailwindcss.com/:63
+[     909ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:3000/favicon.ico:0
+[   82740ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:3000/assets/audio/em-dao-nay.mp3:0
+[   83999ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:3000/favicon.ico:0

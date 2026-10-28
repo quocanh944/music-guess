@@ -1,0 +1,67 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: 🍬
+        - generic [ref=e6]:
+          - heading "KẸO CON" [level=1] [ref=e7]
+          - paragraph [ref=e8]: Đoán Nhạc Ngọt Band
+      - navigation [ref=e9]:
+        - button "🔥 5 Vòng Thử Thách" [ref=e10] [cursor=pointer]
+        - button "📅 Heardle Mỗi Ngày" [ref=e11] [cursor=pointer]
+        - button "🎲 Tự Luyện" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - button "Thống kê" [ref=e14] [cursor=pointer]
+        - button "Hướng dẫn" [ref=e17] [cursor=pointer]
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - button "Easy" [ref=e22] [cursor=pointer]
+      - button "Medium" [ref=e23] [cursor=pointer]
+      - button "Hard" [ref=e24] [cursor=pointer]
+      - button "Expert" [ref=e25] [cursor=pointer]
+      - button "Impossible" [ref=e26] [cursor=pointer]
+    - generic [ref=e34]:
+      - generic [ref=e35]: 0.1s
+      - generic [ref=e36]: 0.5s
+      - generic [ref=e37]: 2.0s
+      - generic [ref=e38]: 8.0s
+      - generic [ref=e39]: 15.0s
+    - generic [ref=e40]:
+      - button [ref=e42] [cursor=pointer]
+      - generic [ref=e45]:
+        - generic [ref=e46]: 2s
+        - generic [ref=e47]: Nghe lại hoặc chọn câu trả lời
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - 'textbox "Tìm tên bài hát của Ngọt (vd: Em Dạo Này, Lần Cuối...)" [active] [ref=e50]': lan cuoi
+        - button "✕" [ref=e63] [cursor=pointer]
+      - 'button "Ng` Lần Cuối Ng` (2017) easy" [ref=e65] [cursor=pointer]':
+        - 'img "Ng`" [ref=e67]'
+        - generic [ref=e68]:
+          - generic [ref=e69]: Lần Cuối
+          - generic [ref=e70]: "Ng` (2017)"
+        - generic [ref=e71]: easy
+    - generic [ref=e51]:
+      - button "Bỏ qua (+8s)" [ref=e72] [cursor=pointer]
+      - button "ĐOÁN" [disabled] [ref=e56]
+    - generic [ref=e58]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]: ⏭️
+          - generic [ref=e76]: Đã bỏ qua đoạn này
+        - generic [ref=e77]: 0.1s
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]: ⏭️
+          - generic [ref=e81]: Đã bỏ qua đoạn này
+        - generic [ref=e82]: 0.5s
+  - generic:
+    - generic: ✅
+    - generic: Đã sao chép vào bộ nhớ tạm!
+  - contentinfo [ref=e59]:
+    - paragraph [ref=e60]:
+      - text: Dành riêng cho
+      - strong [ref=e61]: Kẹo Con
+      - text: 🍬 | Âm nhạc bởi
+      - strong [ref=e62]: Ngọt
+      - text: (2013 - 2024)

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2c1712" />
+      <stop offset="100%" stop-color="#0e0705" />
+    </linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="500" height="500" rx="24" fill="url(#bg3)" />
+  <circle cx="250" cy="250" r="190" fill="url(#glow3)" />
+  <!-- Big 3 in Ngọt style -->
+  <text x="250" y="270" font-family="'Inter', -apple-system, sans-serif" font-size="160" font-weight="900" fill="#fb923c" text-anchor="middle">3</text>
+  <text x="250" y="380" font-family="'Inter', -apple-system, sans-serif" font-size="20" font-weight="700" fill="#fed7aa" text-anchor="middle" letter-spacing="3">TUYỂN TẬP NHẠC NGỌT MỚI TRẺ SÔI ĐỘNG</text>
+  <text x="250" y="415" font-family="'Inter', -apple-system, sans-serif" font-size="15" font-weight="600" fill="#fb923c" text-anchor="middle" letter-spacing="3">ALBUM (2019)</text>
+</svg>

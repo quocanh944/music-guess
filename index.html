@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kẹo Con - Đoán Nhạc Ngọt | Music Guessing Game</title>
+  <meta name="description" content="Trò chơi đoán nhạc dành riêng cho fandom Kẹo Con của ban nhạc Ngọt." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#22c55e',
+            darkBg: '#080c10',
+            darkSurface: '#121821',
+            darkCard: '#18202c',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Canvas Confetti for celebratory wins -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-[#080c10] text-slate-100 min-h-screen flex flex-col justify-between selection:bg-green-500 selection:text-black">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-white/10 glass-panel sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-500 to-emerald-300 flex items-center justify-center font-black text-black text-xl shadow-lg shadow-green-500/20">
+          🍬
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-green-400 bg-clip-text text-transparent">
+            KẸO CON
+          </h1>
+          <p class="text-xs text-slate-400 -mt-1 font-medium">Đoán Nhạc Ngọt Band</p>
+        </div>
+      </div>
+
+      <!-- Mode Selector Pills -->
+      <nav class="hidden md:flex items-center space-x-1 p-1 bg-black/40 rounded-xl border border-white/5">
+        <button id="modeGauntletBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-green-500 text-black shadow-sm">
+          🔥 5 Vòng Thử Thách
+        </button>
+        <button id="modeHeardleBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">
+          📅 Heardle Mỗi Ngày
+        </button>
+        <button id="modeFreeplayBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">
+          🎲 Tự Luyện
+        </button>
+      </nav>
+
+      <!-- Utility Actions -->
+      <div class="flex items-center space-x-2">
+        <button id="statsBtn" title="Thống kê" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </button>
+        <button id="helpBtn" title="Hướng dẫn" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Mode Selector Sub-bar -->
+  <div class="md:hidden border-b border-white/5 bg-black/30 px-4 py-2 flex justify-center space-x-2">
+    <button id="mobileGauntletBtn" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-green-500 text-black">
+      5 Vòng
+    </button>
+    <button id="mobileHeardleBtn" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">
+      Mỗi Ngày
+    </button>
+    <button id="mobileFreeplayBtn" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">
+      Tự Luyện
+    </button>
+  </div>
+
+  <!-- Main Game Stage -->
+  <main class="flex-1 max-w-xl w-full mx-auto px-4 py-6 flex flex-col items-center justify-center space-y-6">
+
+    <!-- Difficulty Tab Bar with View Count Indicators -->
+    <div id="difficultyBar" class="w-full flex items-center justify-between gap-1 p-1.5 rounded-2xl bg-white/5 border border-white/10">
+      <button data-diff="0" class="diff-btn flex-1 py-1.5 px-1 text-center rounded-xl transition-all duration-300 bg-green-500 text-black shadow-lg shadow-green-500/20">
+        <div class="text-xs font-black">Easy</div>
+        <div class="text-[9px] font-semibold opacity-80">&gt; 10M views</div>
+      </button>
+      <button data-diff="1" class="diff-btn flex-1 py-1.5 px-1 text-center rounded-xl transition-all duration-300 text-slate-400 hover:text-yellow-400">
+        <div class="text-xs font-black">Medium</div>
+        <div class="text-[9px] font-semibold opacity-80">3M - 10M</div>
+      </button>
+      <button data-diff="2" class="diff-btn flex-1 py-1.5 px-1 text-center rounded-xl transition-all duration-300 text-slate-400 hover:text-orange-400">
+        <div class="text-xs font-black">Hard</div>
+        <div class="text-[9px] font-semibold opacity-80">1M - 3M</div>
+      </button>
+      <button data-diff="3" class="diff-btn flex-1 py-1.5 px-1 text-center rounded-xl transition-all duration-300 text-slate-400 hover:text-red-400">
+        <div class="text-xs font-black">Expert</div>
+        <div class="text-[9px] font-semibold opacity-80">300K - 1M</div>
+      </button>
+      <button data-diff="4" class="diff-btn flex-1 py-1.5 px-1 text-center rounded-xl transition-all duration-300 text-slate-400 hover:text-purple-400">
+        <div class="text-xs font-black">Impossible</div>
+        <div class="text-[9px] font-semibold opacity-80">&lt; 300K</div>
+      </button>
+    </div>
+
+    <!-- Segmented Snippet Progression Timeline -->
+    <div class="w-full space-y-1.5">
+      <div id="stepSegments" class="flex gap-1.5 h-3 w-full">
+        <div class="step-segment flex-1 rounded-full bg-green-500 transition-all duration-300" data-step="0"></div>
+        <div class="step-segment flex-1 rounded-full bg-white/10 transition-all duration-300" data-step="1"></div>
+        <div class="step-segment flex-1 rounded-full bg-white/10 transition-all duration-300" data-step="2"></div>
+        <div class="step-segment flex-1 rounded-full bg-white/10 transition-all duration-300" data-step="3"></div>
+        <div class="step-segment flex-1 rounded-full bg-white/10 transition-all duration-300" data-step="4"></div>
+      </div>
+      <div class="flex justify-between text-[11px] font-semibold text-slate-400 px-1">
+        <span>0.1s</span>
+        <span>0.5s</span>
+        <span>2.0s</span>
+        <span>8.0s</span>
+        <span>15.0s</span>
+      </div>
+    </div>
+
+    <!-- Central Audio Play Controller -->
+    <div class="flex flex-col items-center justify-center my-4 space-y-4">
+      <div class="play-btn-wrapper">
+        <!-- SVG Radial Progress Ring -->
+        <svg class="progress-ring" width="140" height="140">
+          <circle
+            class="progress-ring__bg"
+            stroke="rgba(255, 255, 255, 0.08)"
+            stroke-width="5"
+            fill="transparent"
+            r="64"
+            cx="70"
+            cy="70"
+          />
+          <circle
+            id="playRingProgress"
+            class="progress-ring__circle"
+            stroke="#22c55e"
+            stroke-width="5"
+            stroke-dasharray="402.12"
+            stroke-dashoffset="402.12"
+            fill="transparent"
+            r="64"
+            cx="70"
+            cy="70"
+          />
+        </svg>
+
+        <!-- Play/Pause Button -->
+        <button id="playBtn" class="play-btn-circle bg-green-500 text-black hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-500/40">
+          <svg id="playIcon" class="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="pauseIcon" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Duration and Audio Status Badge -->
+      <div class="flex items-center space-x-2">
+        <span id="currentDurationBadge" class="font-mono text-sm px-3 py-1 rounded-full bg-white/10 font-bold text-green-400 border border-green-500/30">
+          0.1s
+        </span>
+        <span id="audioModeLabel" class="text-xs text-slate-400 font-medium">
+          Ấn nút để nghe đoạn nhạc
+        </span>
+      </div>
+    </div>
+
+    <!-- Search & Autocomplete Input -->
+    <div class="w-full relative">
+      <div class="relative flex items-center">
+        <div class="absolute left-4 pointer-events-none text-slate-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <input
+          type="text"
+          id="songSearchInput"
+          placeholder="Tìm tên bài hát của Ngọt (vd: Em Dạo Này, Lần Cuối...)"
+          autocomplete="off"
+          class="w-full pl-11 pr-24 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 text-sm font-medium transition-all"
+        />
+        <button id="clearSearchBtn" class="hidden absolute right-4 text-slate-400 hover:text-white p-1">
+          ✕
+        </button>
+      </div>
+
+      <!-- Autocomplete Dropdown List -->
+      <div id="searchResultsList" class="hidden absolute left-0 right-0 top-full mt-2 rounded-2xl glass-dropdown overflow-hidden z-30 max-h-72 overflow-y-auto">
+        <!-- Results populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Controls (Skip / Give Up & Guess) -->
+    <div class="w-full flex items-center gap-3">
+      <button id="skipBtn" class="flex-1 py-3.5 px-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 font-bold text-sm flex items-center justify-center space-x-2 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+        <span id="skipBtnText">Bỏ qua (+0.5s)</span>
+      </button>
+
+      <button id="guessBtn" disabled class="flex-1 py-3.5 px-4 rounded-2xl bg-green-500 hover:bg-green-400 text-black font-extrabold text-sm flex items-center justify-center space-x-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-green-500/20">
+        <span>ĐOÁN</span>
+      </button>
+    </div>
+
+    <!-- Guessed Attempts History -->
+    <div id="attemptsContainer" class="w-full space-y-2 pt-2">
+      <!-- Dynamically filled with previous guesses -->
+    </div>
+  </main>
+
+  <!-- Reveal & Win/Lose Modal -->
+  <div id="revealModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel max-w-sm w-full rounded-3xl p-6 border border-white/15 flex flex-col items-center text-center space-y-4 shadow-2xl relative overflow-hidden">
+      <!-- Glow effect behind artwork -->
+      <div id="revealGlow" class="absolute -top-20 w-56 h-56 rounded-full bg-green-500/30 blur-3xl pointer-events-none"></div>
+
+      <!-- Result Banner Badge -->
+      <div id="resultBadge" class="px-4 py-1.5 rounded-full text-xs font-black tracking-wider uppercase bg-green-500 text-black">
+        CHÍNH XÁC! (0.1S)
+      </div>
+
+      <!-- Album Cover Artwork -->
+      <div class="w-48 h-48 rounded-2xl overflow-hidden shadow-2xl border border-white/20 relative group">
+        <img id="revealCoverImg" src="assets/covers/ngot.svg" alt="Album Cover" class="w-full h-full object-cover" />
+      </div>
+
+      <!-- Song Details -->
+      <div class="space-y-1">
+        <h2 id="revealSongTitle" class="text-2xl font-black text-white tracking-tight">
+          Em Dạo Này
+        </h2>
+        <div class="flex items-center justify-center space-x-2">
+          <p id="revealAlbumInfo" class="text-sm font-semibold text-green-400">
+            Album: Ngọt. (2016)
+          </p>
+          <span id="revealViewsBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-slate-300 border border-white/10">
+            👁️ 48.2M views
+          </span>
+        </div>
+        <p id="revealLyricSnippet" class="text-xs text-slate-400 italic px-4 pt-1">
+          "Em dạo này có còn xem phim một mình?..."
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="w-full pt-2 space-y-2">
+        <button id="nextLevelBtn" class="w-full py-3 rounded-xl bg-green-500 hover:bg-green-400 text-black font-extrabold text-sm transition-all shadow-lg shadow-green-500/20">
+          Màn Tiếp Theo ➜
+        </button>
+        <button id="shareResultBtn" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs flex items-center justify-center space-x-1.5 border border-white/10 transition-all">
+          <span>📋 Sao chép kết quả</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Gauntlet Summary Modal -->
+  <div id="summaryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel max-w-md w-full rounded-3xl p-6 border border-white/15 flex flex-col items-center text-center space-y-5 shadow-2xl">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-yellow-400 to-amber-500 flex items-center justify-center text-3xl shadow-lg shadow-yellow-500/20">
+        🏆
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">TỔNG KẾT 5 MÀN THỬ THÁCH</h2>
+        <p id="summaryScoreText" class="text-sm text-slate-400 mt-1">Bạn đã đoán đúng 4/5 bài hát của Ngọt!</p>
+      </div>
+
+      <!-- Level results list -->
+      <div id="summaryLevelsList" class="w-full space-y-2 text-left">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="w-full pt-2 space-y-2">
+        <button id="restartGauntletBtn" class="w-full py-3 rounded-xl bg-green-500 hover:bg-green-400 text-black font-extrabold text-sm transition-all">
+          Chơi Lại Từ Đầu 🔥
+        </button>
+        <button id="shareSummaryBtn" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs border border-white/10 transition-all">
+          Khoe với bạn bè Kẹo Con
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help / Info Modal -->
+  <div id="helpModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel max-w-md w-full rounded-3xl p-6 border border-white/15 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-extrabold text-lg text-white flex items-center space-x-2">
+          <span>🍬</span>
+          <span>Luật Chơi Đoán Nhạc Ngọt</span>
+        </h3>
+        <button id="closeHelpBtn" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+      <div class="text-sm text-slate-300 space-y-2.5">
+        <p>• <strong>5 Vòng Thử Thách (Gauntlet):</strong> Chinh phục lần lượt 5 cấp độ từ <em>Easy (0.1s)</em> đến <em>Impossible (15s)</em>.</p>
+        <p>• <strong>Đoạn nhạc siêu ngắn:</strong> Ban đầu bạn chỉ được nghe một tích tắc (0.1s). Mỗi lần bấm Bỏ qua hoặc đoán sai, bạn sẽ mở khóa thêm thời lượng (0.5s, 2s, 8s, 15s).</p>
+        <p>• <strong>Tìm kiếm tiếng Việt thông minh:</strong> Gõ không dấu hay có dấu đều tìm được (vd: <code>em dao nay</code> = <em>Em Dạo Này</em>).</p>
+        <p>• Dành tặng tất cả <strong>Kẹo Con</strong> luôn yêu mến âm nhạc của ban nhạc <strong>Ngọt</strong>! 🎶</p>
+      </div>
+      <button id="confirmHelpBtn" class="w-full py-2.5 rounded-xl bg-green-500 text-black font-extrabold text-sm">
+        Đã Hiểu, Chiến Thôi!
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Modal -->
+  <div id="statsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel max-w-sm w-full rounded-3xl p-6 border border-white/15 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-extrabold text-lg text-white">Thống Kê Kẹo Con</h3>
+        <button id="closeStatsBtn" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <div class="grid grid-cols-4 gap-2 text-center py-2">
+        <div class="p-2 rounded-xl bg-white/5">
+          <div id="statPlayed" class="text-xl font-black text-white">0</div>
+          <div class="text-[10px] text-slate-400 uppercase font-semibold">Đã chơi</div>
+        </div>
+        <div class="p-2 rounded-xl bg-white/5">
+          <div id="statWinRate" class="text-xl font-black text-green-400">0%</div>
+          <div class="text-[10px] text-slate-400 uppercase font-semibold">Thắng</div>
+        </div>
+        <div class="p-2 rounded-xl bg-white/5">
+          <div id="statCurrentStreak" class="text-xl font-black text-white">0</div>
+          <div class="text-[10px] text-slate-400 uppercase font-semibold">Chuỗi hiện tại</div>
+        </div>
+        <div class="p-2 rounded-xl bg-white/5">
+          <div id="statMaxStreak" class="text-xl font-black text-yellow-400">0</div>
+          <div class="text-[10px] text-slate-400 uppercase font-semibold">Kỷ lục</div>
+        </div>
+      </div>
+
+      <button id="closeStatsConfirmBtn" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl glass-panel text-xs font-bold text-white border border-green-500/40 shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 flex items-center space-x-2">
+    <span>✅</span>
+    <span id="toastMessage">Đã sao chép vào bộ nhớ tạm!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-4 text-center text-xs text-slate-500">
+    <p>Dành riêng cho <strong>Kẹo Con</strong> 🍬 | Âm nhạc bởi <strong>Ngọt</strong> (2013 - 2024)</p>
+  </footer>
+
+  <!-- Application Logic -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
