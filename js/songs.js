@@ -8,7 +8,7 @@ export const ALBUMS = {
     id: 'ngot2016',
     name: 'Ngọt.',
     year: 2016,
-    cover: 'assets/covers/ngot.svg',
+    cover: 'assets/covers/ngot.jpg',
     color: '#22c55e',
     accentClass: 'text-green-400'
   },
@@ -16,7 +16,7 @@ export const ALBUMS = {
     id: 'ngPrime2017',
     name: 'Ng`',
     year: 2017,
-    cover: 'assets/covers/ng-prime.svg',
+    cover: 'assets/covers/ng-prime.jpg',
     color: '#eab308',
     accentClass: 'text-yellow-400'
   },
@@ -24,7 +24,7 @@ export const ALBUMS = {
     id: 'album3_2019',
     name: '3 (Tuyển Tập Nhạc Ngọt)',
     year: 2019,
-    cover: 'assets/covers/album3.svg',
+    cover: 'assets/covers/album3.jpg',
     color: '#f97316',
     accentClass: 'text-orange-400'
   },
@@ -32,7 +32,7 @@ export const ALBUMS = {
     id: 'gieo2022',
     name: 'Gieo',
     year: 2022,
-    cover: 'assets/covers/gieo.svg',
+    cover: 'assets/covers/gieo.jpg',
     color: '#a855f7',
     accentClass: 'text-purple-400'
   },
@@ -40,7 +40,7 @@ export const ALBUMS = {
     id: 'singles',
     name: 'Singles & EPs',
     year: '2015-2023',
-    cover: 'assets/covers/singles.svg',
+    cover: 'assets/covers/singles.jpg',
     color: '#06b6d4',
     accentClass: 'text-cyan-400'
   }
@@ -110,6 +110,7 @@ export const SONGS = [
   // --- EASY (>= 10M Views) ---
   {
     id: 'cho-toi-lang-thang',
+    ytId: 'gUr4qp6YGLs',
     title: 'Cho Tôi Lang Thang (ft. Đen)',
     albumId: 'singles',
     difficulty: 'easy',
@@ -119,6 +120,7 @@ export const SONGS = [
   },
   {
     id: 'lan-cuoi',
+    ytId: 'kSjj0LlsqnI',
     title: 'Lần Cuối',
     albumId: 'ngPrime2017',
     difficulty: 'easy',
@@ -128,6 +130,7 @@ export const SONGS = [
   },
   {
     id: 'em-dao-nay',
+    ytId: '-6s_eRHYqVM',
     title: 'Em Dạo Này',
     albumId: 'ngot2016',
     difficulty: 'easy',
@@ -137,6 +140,7 @@ export const SONGS = [
   },
   {
     id: 'chuyen-kenh',
+    ytId: 'ECZVU4x6Xq0',
     title: 'Chuyển Kênh',
     albumId: 'album3_2019',
     difficulty: 'easy',
@@ -146,6 +150,7 @@ export const SONGS = [
   },
   {
     id: 'thay-chua',
+    ytId: '9mA7h1jfxc8',
     title: 'Thấy Chưa',
     albumId: 'gieo2022',
     difficulty: 'easy',
@@ -155,6 +160,7 @@ export const SONGS = [
   },
   {
     id: 'de-quen',
+    ytId: 'W08NL1mchhs',
     title: 'Để Quên',
     albumId: 'album3_2019',
     difficulty: 'easy',
@@ -166,6 +172,7 @@ export const SONGS = [
   // --- MEDIUM (3M - 10M Views) ---
   {
     id: 'het-thoi',
+    ytId: 'yJbGCwT7Kms',
     title: 'Hết Thời',
     albumId: 'album3_2019',
     difficulty: 'medium',
@@ -175,6 +182,7 @@ export const SONGS = [
   },
   {
     id: 'cho-toi-di-theo',
+    ytId: 'U07kJZp5b1o',
     title: 'Cho Tôi Đi Theo',
     albumId: 'ngot2016',
     difficulty: 'medium',
@@ -184,6 +192,7 @@ export const SONGS = [
   },
   {
     id: 'cho',
+    ytId: 'RkXStDkolwE',
     title: 'Cho',
     albumId: 'singles',
     difficulty: 'medium',
@@ -193,6 +202,7 @@ export const SONGS = [
   },
   {
     id: 'dot',
+    ytId: 'xvpverLphlo',
     title: 'Đốt',
     albumId: 'singles',
     difficulty: 'medium',
@@ -202,6 +212,7 @@ export const SONGS = [
   },
   {
     id: 'xanh',
+    ytId: '0YdgmKjUG-o',
     title: 'Xanh',
     albumId: 'ngot2016',
     difficulty: 'medium',
@@ -211,6 +222,7 @@ export const SONGS = [
   },
   {
     id: 'ke-thu',
+    ytId: '-b4qvyf_vNU',
     title: 'Kẻ Thù',
     albumId: 'ngPrime2017',
     difficulty: 'medium',
@@ -220,6 +232,7 @@ export const SONGS = [
   },
   {
     id: 'em-trang-tri',
+    ytId: 'KypuJGsZ8pQ',
     title: 'Em Trang Trí',
     albumId: 'gieo2022',
     difficulty: 'medium',
@@ -229,6 +242,7 @@ export const SONGS = [
   },
   {
     id: 'may-khi',
+    ytId: 'LvNEPB5x7T8',
     title: 'Mấy Khi',
     albumId: 'album3_2019',
     difficulty: 'medium',
@@ -238,6 +252,7 @@ export const SONGS = [
   },
   {
     id: 'nut',
+    ytId: 'xG94wlZai1I',
     title: 'Nứt',
     albumId: 'album3_2019',
     difficulty: 'medium',
@@ -247,6 +262,7 @@ export const SONGS = [
   },
   {
     id: 'em-co-chac-khong',
+    ytId: 'p8VDTNYyKbo',
     title: 'Em Có Chắc Không?',
     albumId: 'album3_2019',
     difficulty: 'medium',
@@ -256,6 +272,7 @@ export const SONGS = [
   },
   {
     id: 'chuyen-do-dang',
+    ytId: 'o1RG7x4-WXM',
     title: 'Chuyện Dở Dang',
     albumId: 'singles',
     difficulty: 'medium',
@@ -265,6 +282,7 @@ export const SONGS = [
   },
   {
     id: 'bartender',
+    ytId: '1u0ygl9vJHI',
     title: 'Bartender',
     albumId: 'singles',
     difficulty: 'medium',
@@ -274,6 +292,7 @@ export const SONGS = [
   },
   {
     id: 'hay-la',
+    ytId: 'LecuZccoWBs',
     title: 'Hay Là',
     albumId: 'singles',
     difficulty: 'medium',
@@ -285,6 +304,7 @@ export const SONGS = [
   // --- HARD (1M - 3M Views) ---
   {
     id: 'mo-lam-ma',
+    ytId: 'FBM70NaZuVI',
     title: 'Mơ Làm Ma (ft. Thỏ Trauma)',
     albumId: 'singles',
     difficulty: 'hard',
@@ -294,6 +314,7 @@ export const SONGS = [
   },
   {
     id: 'khong-lam-gi',
+    ytId: 'mjpUWO5MuPg',
     title: 'Không Làm Gì',
     albumId: 'singles',
     difficulty: 'hard',
@@ -303,6 +324,7 @@ export const SONGS = [
   },
   {
     id: 'mot-ngay-khong-mua',
+    ytId: 'gQOFI4ATIOY',
     title: 'Một Ngày Không Mưa',
     albumId: 'ngPrime2017',
     difficulty: 'hard',
@@ -312,6 +334,7 @@ export const SONGS = [
   },
   {
     id: 'gia-vo',
+    ytId: 'njv-aZKJnn8',
     title: 'Giả Vờ',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -321,6 +344,7 @@ export const SONGS = [
   },
   {
     id: 'tim-nguoi-nha',
+    ytId: 'j-oB7Bbv4ig',
     title: 'Tìm Người Nhà',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -330,6 +354,7 @@ export const SONGS = [
   },
   {
     id: 'meu-mao',
+    ytId: 'KOBT2yACJvA',
     title: 'Mếu Máo (T.T)',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -339,6 +364,7 @@ export const SONGS = [
   },
   {
     id: 'di-tru-dong',
+    ytId: 'ZWY5WXssw_w',
     title: 'Đi Trú Đông',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -348,6 +374,7 @@ export const SONGS = [
   },
   {
     id: 'drama-queen',
+    ytId: 'Vq2ShP3qC2M',
     title: 'Drama Queen',
     albumId: 'singles',
     difficulty: 'hard',
@@ -357,6 +384,7 @@ export const SONGS = [
   },
   {
     id: 'thap-huong-hoa-vang',
+    ytId: 'TjmZD0V8m0U',
     title: 'Thắp Hương Hoá Vàng',
     albumId: 'singles',
     difficulty: 'hard',
@@ -366,6 +394,7 @@ export const SONGS = [
   },
   {
     id: 'vi-ai',
+    ytId: 'GqIaese5_Ac',
     title: 'Vì Ai',
     albumId: 'singles',
     difficulty: 'hard',
@@ -375,6 +404,7 @@ export const SONGS = [
   },
   {
     id: 'chuong-bao-thuc',
+    ytId: 'bWO-YOfQ2xs',
     title: 'Chuông Báo Thức',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -384,6 +414,7 @@ export const SONGS = [
   },
   {
     id: 'mau-den-trang',
+    ytId: '0VJZOF_SJKs',
     title: 'Màu (Đen Trắng)',
     albumId: 'album3_2019',
     difficulty: 'hard',
@@ -393,6 +424,7 @@ export const SONGS = [
   },
   {
     id: 'ca-hoi',
+    ytId: 'by8l9xVxtfg',
     title: 'Cá Hồi',
     albumId: 'ngot2016',
     difficulty: 'hard',
@@ -404,6 +436,7 @@ export const SONGS = [
   // --- EXPERT (400K - 1M Views) ---
   {
     id: 'meo-hoang',
+    ytId: 'DlZ0vjfmzV0',
     title: 'Mèo Hoang',
     albumId: 'ngPrime2017',
     difficulty: 'expert',
@@ -413,6 +446,7 @@ export const SONGS = [
   },
   {
     id: 've-di-thien-duong',
+    ytId: 'NmHHvnobW2k',
     title: 'Vé Đi Thiên Đường',
     albumId: 'album3_2019',
     difficulty: 'expert',
@@ -422,6 +456,7 @@ export const SONGS = [
   },
   {
     id: 'be',
+    ytId: 'jhs45JW53P8',
     title: '(Bé)',
     albumId: 'album3_2019',
     difficulty: 'expert',
@@ -431,6 +466,7 @@ export const SONGS = [
   },
   {
     id: 'be-cool',
+    ytId: 'vsRS7oGqPTg',
     title: 'Be Cool',
     albumId: 'ngot2016',
     difficulty: 'expert',
@@ -440,6 +476,7 @@ export const SONGS = [
   },
   {
     id: 'kho-bau',
+    ytId: 'XyPy4AWa9J0',
     title: 'Kho Báu',
     albumId: 'ngPrime2017',
     difficulty: 'expert',
@@ -449,6 +486,7 @@ export const SONGS = [
   },
   {
     id: 'khap-xung-quanh',
+    ytId: '4VKoHGN9FzU',
     title: 'Khắp Xung Quanh',
     albumId: 'ngot2016',
     difficulty: 'expert',
@@ -458,6 +496,7 @@ export const SONGS = [
   },
   {
     id: 'du-bao-thoi-tiet',
+    ytId: 'zVB61Ta9TMs',
     title: 'Dự Báo Thời Tiết',
     albumId: 'album3_2019',
     difficulty: 'expert',
@@ -467,6 +506,7 @@ export const SONGS = [
   },
   {
     id: 'xin-cho-toi',
+    ytId: '9ZKA9xaMLac',
     title: 'Xin Cho Tôi',
     albumId: 'ngPrime2017',
     difficulty: 'expert',
@@ -478,6 +518,7 @@ export const SONGS = [
   // --- IMPOSSIBLE (< 400K Views) ---
   {
     id: 'a-oi',
+    ytId: 'RTYSgSQGij8',
     title: 'À Ơi',
     albumId: 'ngot2016',
     difficulty: 'impossible',
@@ -487,6 +528,7 @@ export const SONGS = [
   },
   {
     id: 'nhung-chuyen-phieu-luu',
+    ytId: 'UBgulvgHPE4',
     title: 'Những Chuyến Phiêu Lưu',
     albumId: 'ngot2016',
     difficulty: 'impossible',
@@ -496,6 +538,7 @@ export const SONGS = [
   },
   {
     id: 'xanh-fingerstyle',
+    ytId: 'cnwM6ujDrKI',
     title: 'Xanh (Fingerstyle)',
     albumId: 'singles',
     difficulty: 'impossible',

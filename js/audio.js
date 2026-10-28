@@ -89,6 +89,52 @@ export class AudioManager {
     });
   }
 
+  /**
+   * Plays the full available audio track for the song reveal modal
+   */
+  async playFullTrack(song, onProgress, onEnd) {
+    this.stop();
+    this.isPlaying = true;
+
+    const hasFile = song.audioFile ? await this.checkAudioFile(song.audioFile) : false;
+    if (hasFile) {
+      try {
+        this.audioElement.src = song.audioFile;
+        this.audioElement.currentTime = 0;
+        await this.audioElement.play();
+
+        const updateTrack = () => {
+          if (!this.isPlaying || this.audioElement.paused) return;
+          const cur = this.audioElement.currentTime;
+          const dur = this.audioElement.duration || 25;
+          const prog = Math.min(1.0, cur / dur);
+          if (onProgress) onProgress(prog, cur, dur);
+          if (cur < dur) {
+            this.progressInterval = requestAnimationFrame(updateTrack);
+          }
+        };
+        this.progressInterval = requestAnimationFrame(updateTrack);
+
+        this.audioElement.onended = () => {
+          this.isPlaying = false;
+          if (onEnd) onEnd();
+        };
+        return;
+      } catch (err) {
+        console.warn('Full track playback failed:', err);
+      }
+    }
+
+    // Fallback synthesizer plays 15s snippet
+    this.playSnippet(song, 15.0, onProgress, onEnd);
+  }
+
+  seek(fraction) {
+    if (this.audioElement && this.audioElement.duration) {
+      this.audioElement.currentTime = fraction * this.audioElement.duration;
+    }
+  }
+
   stop() {
     this.isPlaying = false;
     if (this.progressInterval) {

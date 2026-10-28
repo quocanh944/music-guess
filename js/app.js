@@ -43,6 +43,17 @@ const revealLyricSnippet = document.getElementById('revealLyricSnippet');
 const nextLevelBtn = document.getElementById('nextLevelBtn');
 const shareResultBtn = document.getElementById('shareResultBtn');
 
+// Modal Audio Player Elements
+const modalPlayBtn = document.getElementById('modalPlayBtn');
+const modalPlayIcon = document.getElementById('modalPlayIcon');
+const modalPauseIcon = document.getElementById('modalPauseIcon');
+const modalPlayText = document.getElementById('modalPlayText');
+const modalYoutubeLink = document.getElementById('modalYoutubeLink');
+const modalCurrentTime = document.getElementById('modalCurrentTime');
+const modalTotalTime = document.getElementById('modalTotalTime');
+const modalProgressBar = document.getElementById('modalProgressBar');
+const modalProgressBarBg = document.getElementById('modalProgressBarBg');
+
 const summaryModal = document.getElementById('summaryModal');
 const summaryScoreText = document.getElementById('summaryScoreText');
 const summaryLevelsList = document.getElementById('summaryLevelsList');
@@ -286,6 +297,16 @@ function showRevealModal(won, song, duration) {
   revealViewsBadge.textContent = `👁️ ${song.views || 'N/A'} lượt nghe`;
   revealLyricSnippet.textContent = `"${song.lyricSnippet}"`;
 
+  // Setup YouTube link
+  if (song.ytId) {
+    modalYoutubeLink.href = `https://www.youtube.com/watch?v=${song.ytId}`;
+  } else {
+    modalYoutubeLink.href = `https://www.youtube.com/results?search_query=Ngot+${encodeURIComponent(song.title)}`;
+  }
+
+  // Reset modal audio player UI
+  resetModalPlayerUI();
+
   if (won) {
     resultBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black tracking-wider uppercase bg-green-500 text-black shadow-lg shadow-green-500/30';
     resultBadge.textContent = `CHÍNH XÁC! ĐOÁN TRONG ${duration}s`;
@@ -307,9 +328,54 @@ function showRevealModal(won, song, duration) {
   }
 
   revealModal.classList.remove('hidden');
+
+  // Auto-play the full audio so player can immediately enjoy the song!
+  startModalFullAudio(song);
+}
+
+function resetModalPlayerUI() {
+  modalPlayIcon.classList.remove('hidden');
+  modalPauseIcon.classList.add('hidden');
+  modalPlayText.textContent = 'Nghe bài hát';
+  modalProgressBar.style.width = '0%';
+  modalCurrentTime.textContent = '0:00';
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function startModalFullAudio(song) {
+  modalPlayIcon.classList.add('hidden');
+  modalPauseIcon.classList.remove('hidden');
+  modalPlayText.textContent = 'Đang phát';
+
+  audio.playFullTrack(
+    song,
+    (prog, cur, dur) => {
+      modalProgressBar.style.width = `${prog * 100}%`;
+      modalCurrentTime.textContent = formatTime(cur);
+      modalTotalTime.textContent = formatTime(dur);
+    },
+    () => {
+      resetModalPlayerUI();
+    }
+  );
+}
+
+function toggleModalAudio() {
+  if (audio.isPlaying) {
+    audio.stop();
+    resetModalPlayerUI();
+  } else if (game.currentSong) {
+    startModalFullAudio(game.currentSong);
+  }
 }
 
 function handleNextLevel() {
+  audio.stop();
   revealModal.classList.add('hidden');
 
   if (game.mode === GAME_MODES.GAUNTLET) {
@@ -459,6 +525,14 @@ function triggerConfetti() {
 function setupEventListeners() {
   // Audio Play
   playBtn.addEventListener('click', toggleAudio);
+
+  // Modal Audio Player
+  modalPlayBtn.addEventListener('click', toggleModalAudio);
+  modalProgressBarBg.addEventListener('click', (e) => {
+    const rect = modalProgressBarBg.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    audio.seek(fraction);
+  });
 
   // Search
   songSearchInput.addEventListener('input', handleSearchInput);
