@@ -5,8 +5,8 @@
  *        for zero-latency 0.1s, 0.5s, and 2.0s snippet playback in RAM.
  * Tier 2 (Background ~208KB): Silently preloads first ~16.5s in the background
  *        so 8.0s and 15.0s snippets are ready in RAM before the user skips.
- * Tier 3 (Full Track Stream): Streams the full MP3 via HTML5 Audio element
- *        only when the reveal modal opens at the end of the round.
+ * Tier 3 (Full Track Web Audio Buffer): Decodes the full track in the background
+ *        for 100% instant, glitch-free seeking (fast-forward/rewind) in the Reveal Modal.
  */
 import { NgotSynthesizer } from './synth.js';
 
@@ -20,19 +20,26 @@ export class AudioManager {
   constructor() {
     this.synth = new NgotSynthesizer();
     this.audioCtx = null;
+    this.offlineDecodeCtx = null;
     this.activeSource = null;
     this.activeGain = null;
 
-    // HTML5 Audio element used strictly for Tier 3 (full-song streaming in Reveal Modal)
-    this.audioElement = new Audio();
-    this.audioElement.preload = 'metadata';
-
     this.isPlaying = false;
+    this.isFullTrackMode = false;
     this.currentDuration = 0;
     this.progressInterval = null;
     this.stopTimer = null;
 
-    // Cache of url -> { buffer, maxDuration, tier1Promise, tier2Promise }
+    // Full-track modal playback state (for instant seek & pause/resume)
+    this.fullTrackSong = null;
+    this.fullTrackOffset = 0;       // Playback position (seconds) when started/paused
+    this.fullTrackStartCtxTime = 0; // audioCtx.currentTime when playback started
+    this.fullTrackDuration = 0;     // Total duration of full song
+    this.fullTrackOnProgress = null;
+    this.fullTrackOnEnd = null;
+    this.seekGeneration = 0;
+
+    // Cache of url -> { buffer, fullBuffer, maxDuration, tier1Promise, tier2Promise, fullPromise, failed }
     this.bufferCache = new Map();
   }
 
@@ -65,62 +72,55 @@ export class AudioManager {
 
   /**
    * Fetches up to `maxBytes` of an MP3 file using both HTTP Range header
-   * and ReadableStream byte-capping (so even servers ignoring Range won't download the full 3MB file).
+   * and ReadableStream byte-capping. Uses a distinct query param `?slice=`
+   * so partial/aborted responses never collide with the full-file cache.
    */
   async fetchAudioSlice(url, maxBytes) {
     const controller = new AbortController();
-    try {
-      const res = await fetch(url, {
-        headers: { Range: `bytes=0-${maxBytes - 1}` },
-        signal: controller.signal
-      });
+    const sliceUrl = `${url}?slice=${maxBytes}`;
+    const res = await fetch(sliceUrl, {
+      headers: { Range: `bytes=0-${maxBytes - 1}` },
+      signal: controller.signal
+    });
 
-      if (!res.ok && res.status !== 206) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-
-      // If the server returned 206 Partial Content with exact range, read arrayBuffer directly
-      const contentLength = parseInt(res.headers.get('content-length') || '0', 10);
-      if (res.status === 206 && contentLength > 0 && contentLength <= maxBytes + 4096) {
-        return await res.arrayBuffer();
-      }
-
-      // Otherwise (e.g. 200 OK full stream), read chunks up to maxBytes and abort connection early
-      if (res.body && res.body.getReader) {
-        const reader = res.body.getReader();
-        const chunks = [];
-        let received = 0;
-
-        while (received < maxBytes) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          chunks.push(value);
-          received += value.byteLength;
-          if (received >= maxBytes) {
-            controller.abort();
-            break;
-          }
-        }
-
-        const combined = new Uint8Array(Math.min(received, maxBytes));
-        let offset = 0;
-        for (const chunk of chunks) {
-          const remaining = combined.byteLength - offset;
-          if (remaining <= 0) break;
-          const slice = chunk.byteLength > remaining ? chunk.subarray(0, remaining) : chunk;
-          combined.set(slice, offset);
-          offset += slice.byteLength;
-        }
-        return combined.buffer;
-      }
-
-      return await res.arrayBuffer();
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        throw err;
-      }
-      throw err;
+    if (!res.ok && res.status !== 206) {
+      throw new Error(`HTTP ${res.status}`);
     }
+
+    const contentLength = parseInt(res.headers.get('content-length') || '0', 10);
+    if (res.status === 206 && contentLength > 0 && contentLength <= maxBytes + 4096) {
+      return await res.arrayBuffer();
+    }
+
+    if (res.body && res.body.getReader) {
+      const reader = res.body.getReader();
+      const chunks = [];
+      let received = 0;
+
+      while (received < maxBytes) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        received += value.byteLength;
+        if (received >= maxBytes) {
+          controller.abort();
+          break;
+        }
+      }
+
+      const combined = new Uint8Array(Math.min(received, maxBytes));
+      let offset = 0;
+      for (const chunk of chunks) {
+        const remaining = combined.byteLength - offset;
+        if (remaining <= 0) break;
+        const slice = chunk.byteLength > remaining ? chunk.subarray(0, remaining) : chunk;
+        combined.set(slice, offset);
+        offset += slice.byteLength;
+      }
+      return combined.buffer;
+    }
+
+    return await res.arrayBuffer();
   }
 
   /**
@@ -129,49 +129,65 @@ export class AudioManager {
   async decodeSlice(url, maxBytes) {
     const arrayBuffer = await this.fetchAudioSlice(url, maxBytes);
     const ctx = this.getDecodeContext();
-    // Copy buffer in case decodeAudioData detaches it
     const copy = arrayBuffer.slice(0);
     return await ctx.decodeAudioData(copy);
   }
 
   /**
-   * Preloads a song using the 2-stage progressive strategy:
-   * 1. Tier 1 (36KB ~ 2.8s) immediately for 0.1s / 0.5s / 2.0s.
-   * 2. Tier 2 (208KB ~ 16.5s) in the background for 8.0s / 15.0s.
-   * 3. Optional: Tier 1 preload for the next level's song.
+   * Fetches and decodes the entire MP3 file into an AudioBuffer for instant seeking
    */
-  preloadSong(song, nextSong = null) {
-    if (!song || !song.audioFile) return null;
-    const url = song.audioFile;
+  async decodeFullFile(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const arrayBuffer = await res.arrayBuffer();
+    const ctx = this.getDecodeContext();
+    const copy = arrayBuffer.slice(0);
+    return await ctx.decodeAudioData(copy);
+  }
 
+  getOrCreateEntry(url) {
     let entry = this.bufferCache.get(url);
     if (!entry) {
       entry = {
         buffer: null,
+        fullBuffer: null,
         maxDuration: 0,
         tier1Promise: null,
         tier2Promise: null,
+        fullPromise: null,
         failed: false
       };
       this.bufferCache.set(url, entry);
     }
+    return entry;
+  }
 
-    // Start Tier 1 (36KB) immediately if not started
+  /**
+   * Preloads a song using the 3-stage progressive strategy:
+   * 1. Tier 1 (36KB ~ 2.8s) immediately for 0.1s / 0.5s / 2.0s.
+   * 2. Tier 2 (208KB ~ 16.5s) in the background for 8.0s / 15.0s.
+   * 3. Tier 3 (Full Track) in the background after Tier 2 for instant modal seeking.
+   */
+  preloadSong(song, nextSong = null) {
+    if (!song || !song.audioFile) return null;
+    const url = song.audioFile;
+    const entry = this.getOrCreateEntry(url);
+
     if (!entry.tier1Promise) {
       entry.tier1Promise = this.decodeSlice(url, TIER1_BYTES)
         .then(audioBuffer => {
-          // Only set if Tier 2 hasn't already populated a longer buffer
           if (!entry.buffer || audioBuffer.duration > entry.maxDuration) {
             entry.buffer = audioBuffer;
             entry.maxDuration = audioBuffer.duration;
           }
-          // Automatically kick off Tier 2 (208KB) in background
-          this.ensureTier2(url);
-
-          // Also preload Tier 1 of the next Gauntlet level song in background
-          if (nextSong && nextSong.audioFile) {
-            this.preloadTier1Only(nextSong);
-          }
+          // Kick off Tier 2 (208KB) in background
+          this.ensureTier2(url).then(() => {
+            // Once 16.5s intro is ready, preload Tier 1 of next level + full track in background
+            if (nextSong && nextSong.audioFile) {
+              this.preloadTier1Only(nextSong);
+            }
+            this.ensureFullBuffer(url);
+          });
           return audioBuffer;
         })
         .catch(err => {
@@ -193,15 +209,7 @@ export class AudioManager {
     const url = song.audioFile;
     if (this.bufferCache.has(url)) return;
 
-    const entry = {
-      buffer: null,
-      maxDuration: 0,
-      tier1Promise: null,
-      tier2Promise: null,
-      failed: false
-    };
-    this.bufferCache.set(url, entry);
-
+    const entry = this.getOrCreateEntry(url);
     entry.tier1Promise = this.decodeSlice(url, TIER1_BYTES)
       .then(audioBuffer => {
         if (!entry.buffer || audioBuffer.duration > entry.maxDuration) {
@@ -217,25 +225,43 @@ export class AudioManager {
    * Ensures the 16.5s Tier 2 intro buffer (208KB) is loaded in background
    */
   ensureTier2(url) {
-    let entry = this.bufferCache.get(url);
-    if (!entry) {
-      entry = { buffer: null, maxDuration: 0, tier1Promise: null, tier2Promise: null, failed: false };
-      this.bufferCache.set(url, entry);
-    }
+    const entry = this.getOrCreateEntry(url);
     if (!entry.tier2Promise) {
       entry.tier2Promise = this.decodeSlice(url, TIER2_BYTES)
         .then(audioBuffer => {
-          entry.buffer = audioBuffer;
-          entry.maxDuration = audioBuffer.duration;
+          if (!entry.fullBuffer && audioBuffer.duration > entry.maxDuration) {
+            entry.buffer = audioBuffer;
+            entry.maxDuration = audioBuffer.duration;
+          }
           return audioBuffer;
         })
         .catch(err => {
           console.warn('Tier 2 preload failed:', err);
-          entry.failed = true;
           return null;
         });
     }
     return entry.tier2Promise;
+  }
+
+  /**
+   * Ensures the full song AudioBuffer is decoded for instant modal seeking
+   */
+  ensureFullBuffer(url) {
+    const entry = this.getOrCreateEntry(url);
+    if (!entry.fullPromise) {
+      entry.fullPromise = this.decodeFullFile(url)
+        .then(fullAudioBuffer => {
+          entry.fullBuffer = fullAudioBuffer;
+          entry.buffer = fullAudioBuffer;
+          entry.maxDuration = fullAudioBuffer.duration;
+          return fullAudioBuffer;
+        })
+        .catch(err => {
+          console.warn('Full buffer decode failed:', err);
+          return null;
+        });
+    }
+    return entry.fullPromise;
   }
 
   /**
@@ -244,6 +270,7 @@ export class AudioManager {
   async playSnippet(song, duration, onProgress, onEnd, onLoadingChange) {
     this.stop();
     this.isPlaying = true;
+    this.isFullTrackMode = false;
     this.currentDuration = duration;
 
     const ctx = this.getAudioContext();
@@ -256,11 +283,9 @@ export class AudioManager {
     if (song && song.audioFile) {
       const entry = this.preloadSong(song);
 
-      // Check if existing decoded buffer in RAM is already long enough
       if (entry && entry.buffer && entry.maxDuration >= duration) {
         targetBuffer = entry.buffer;
       } else if (entry && !entry.failed) {
-        // Notify UI that we are waiting for the small chunk to finish loading
         if (onLoadingChange) onLoadingChange(true);
         try {
           if (duration <= 2.1 && entry.tier1Promise) {
@@ -278,7 +303,6 @@ export class AudioManager {
       }
     }
 
-    // If user clicked stop while waiting for network chunk, abort playback
     if (!this.isPlaying) return;
 
     if (targetBuffer) {
@@ -293,7 +317,6 @@ export class AudioManager {
         const now = ctx.currentTime;
         const playDur = Math.min(duration, targetBuffer.duration);
 
-        // Micro fade-out (8ms) at the very end to avoid any speaker click on 0.1s cut
         const fadeTime = Math.min(0.008, playDur * 0.2);
         gainNode.gain.setValueAtTime(1.0, now);
         gainNode.gain.setValueAtTime(1.0, Math.max(now, now + playDur - fadeTime));
@@ -302,15 +325,13 @@ export class AudioManager {
         this.activeSource = source;
         this.activeGain = gainNode;
 
-        // Start sample-accurate playback from 0.0s for `playDur` seconds
         source.start(now, 0, playDur);
 
-        // Start UI progress loop synchronized with hardware audio clock
         const startPerf = performance.now();
         const durationMs = duration * 1000;
 
         const updateProgress = () => {
-          if (!this.isPlaying) return;
+          if (!this.isPlaying || this.isFullTrackMode) return;
           const elapsed = performance.now() - startPerf;
           const progress = Math.min(1.0, elapsed / durationMs);
 
@@ -325,7 +346,7 @@ export class AudioManager {
         this.progressInterval = requestAnimationFrame(updateProgress);
 
         source.onended = () => {
-          if (!this.isPlaying) return;
+          if (!this.isPlaying || this.isFullTrackMode) return;
           this.isPlaying = false;
           this.activeSource = null;
           this.activeGain = null;
@@ -366,40 +387,127 @@ export class AudioManager {
   }
 
   /**
-   * Tier 3: Streams the full audio track progressively for the Reveal Modal
+   * Returns current playback timestamp in seconds for the modal full-track player
    */
-  async playFullTrack(song, onProgress, onEnd) {
-    this.stop();
+  getCurrentFullTime() {
+    if (!this.isPlaying || !this.isFullTrackMode || !this.audioCtx) {
+      return this.fullTrackOffset;
+    }
+    const elapsed = Math.max(0, this.audioCtx.currentTime - this.fullTrackStartCtxTime);
+    return Math.min(this.fullTrackDuration || 300, this.fullTrackOffset + elapsed);
+  }
+
+  /**
+   * Starts or resumes a Web Audio buffer source at `offsetSec` for full-track modal playback
+   */
+  startBufferAtOffset(buffer, offsetSec) {
+    this.stopActiveSourceOnly();
+
+    const ctx = this.getAudioContext();
+    const clampedOffset = Math.max(0, Math.min(offsetSec, buffer.duration - 0.05));
+
+    const source = ctx.createBufferSource();
+    const gainNode = ctx.createGain();
+    source.buffer = buffer;
+    source.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    this.activeSource = source;
+    this.activeGain = gainNode;
+    this.fullTrackOffset = clampedOffset;
+    this.fullTrackStartCtxTime = ctx.currentTime;
+    this.fullTrackDuration = buffer.duration;
+
+    const myGen = ++this.seekGeneration;
+    source.start(0, clampedOffset);
+
+    if (this.progressInterval) {
+      cancelAnimationFrame(this.progressInterval);
+    }
+
+    const updateTrack = () => {
+      if (!this.isPlaying || !this.isFullTrackMode || this.seekGeneration !== myGen) return;
+      const cur = this.getCurrentFullTime();
+      const dur = this.fullTrackDuration || buffer.duration;
+      const prog = Math.min(1.0, cur / dur);
+      if (this.fullTrackOnProgress) {
+        this.fullTrackOnProgress(prog, cur, dur);
+      }
+      if (cur < dur) {
+        this.progressInterval = requestAnimationFrame(updateTrack);
+      }
+    };
+    this.progressInterval = requestAnimationFrame(updateTrack);
+
+    source.onended = () => {
+      if (!this.isPlaying || !this.isFullTrackMode || this.seekGeneration !== myGen) return;
+      const cur = this.getCurrentFullTime();
+      if (cur >= this.fullTrackDuration - 0.25) {
+        this.isPlaying = false;
+        this.fullTrackOffset = 0;
+        if (this.fullTrackOnEnd) this.fullTrackOnEnd();
+      }
+    };
+  }
+
+  /**
+   * Tier 3: Plays the full track in the Reveal Modal using Web Audio API
+   * so seeking (fast-forward / rewind) is 100% instant and never resets to 0:00.
+   */
+  async playFullTrack(song, onProgress, onEnd, resumeFromPaused = false) {
+    const isSameSong = this.fullTrackSong && song && this.fullTrackSong.id === song.id;
+    const startOffset = (resumeFromPaused && isSameSong && this.fullTrackOffset > 0)
+      ? this.fullTrackOffset
+      : 0;
+
+    this.stopActiveSourceOnly();
+    if (this.progressInterval) {
+      cancelAnimationFrame(this.progressInterval);
+      this.progressInterval = null;
+    }
+
     this.isPlaying = true;
+    this.isFullTrackMode = true;
+    this.fullTrackSong = song;
+    this.fullTrackOffset = startOffset;
+    this.fullTrackOnProgress = onProgress;
+    this.fullTrackOnEnd = onEnd;
+
+    const ctx = this.getAudioContext();
+    if (ctx.state === 'suspended') {
+      await ctx.resume().catch(() => {});
+    }
 
     if (song && song.audioFile) {
-      try {
-        // Avoid resetting src if already loaded for the same song
-        if (!this.audioElement.src || !this.audioElement.src.endsWith(song.audioFile)) {
-          this.audioElement.src = song.audioFile;
-        }
-        this.audioElement.currentTime = 0;
-        await this.audioElement.play();
+      const entry = this.preloadSong(song);
+      const fullPromise = this.ensureFullBuffer(song.audioFile);
 
-        const updateTrack = () => {
-          if (!this.isPlaying || this.audioElement.paused) return;
-          const cur = this.audioElement.currentTime;
-          const dur = this.audioElement.duration || 200;
-          const prog = Math.min(1.0, cur / dur);
-          if (onProgress) onProgress(prog, cur, dur);
-          if (cur < dur) {
-            this.progressInterval = requestAnimationFrame(updateTrack);
-          }
-        };
-        this.progressInterval = requestAnimationFrame(updateTrack);
-
-        this.audioElement.onended = () => {
-          this.isPlaying = false;
-          if (onEnd) onEnd();
-        };
+      // If full buffer is already decoded in RAM, play immediately from `startOffset`
+      if (entry.fullBuffer) {
+        this.startBufferAtOffset(entry.fullBuffer, startOffset);
         return;
-      } catch (err) {
-        console.warn('Full track streaming playback failed:', err);
+      }
+
+      // If Tier 1/2 partial buffer is available and covers `startOffset`, start immediately
+      // and seamlessly swap to `fullBuffer` as soon as it finishes decoding!
+      if (entry.buffer && startOffset < entry.buffer.duration - 0.5) {
+        this.startBufferAtOffset(entry.buffer, startOffset);
+
+        fullPromise.then(fullBuf => {
+          if (!fullBuf || !this.isPlaying || !this.isFullTrackMode || this.fullTrackSong?.id !== song.id) return;
+          // Seamlessly upgrade to full buffer at the exact current playback position
+          const currentPos = this.getCurrentFullTime();
+          this.startBufferAtOffset(fullBuf, currentPos);
+        });
+        return;
+      }
+
+      // Otherwise await full buffer and play from `startOffset`
+      const fullBuf = await fullPromise;
+      if (!this.isPlaying || !this.isFullTrackMode) return;
+      if (fullBuf) {
+        this.startBufferAtOffset(fullBuf, startOffset);
+        return;
       }
     }
 
@@ -407,22 +515,58 @@ export class AudioManager {
     this.playSnippet(song, 15.0, onProgress, onEnd);
   }
 
-  seek(fraction) {
-    if (this.audioElement && this.audioElement.duration) {
-      this.audioElement.currentTime = fraction * this.audioElement.duration;
+  /**
+   * Pauses modal full-track playback while preserving current timestamp
+   */
+  pauseFullTrack() {
+    if (this.isFullTrackMode && this.isPlaying) {
+      this.fullTrackOffset = this.getCurrentFullTime();
     }
-  }
-
-  stop() {
     this.isPlaying = false;
+    this.stopActiveSourceOnly();
     if (this.progressInterval) {
       cancelAnimationFrame(this.progressInterval);
       this.progressInterval = null;
     }
-    if (this.stopTimer) {
-      clearTimeout(this.stopTimer);
-      this.stopTimer = null;
+  }
+
+  /**
+   * Instant, sample-accurate seek to `fraction` (0.0 -> 1.0) of the full track
+   */
+  async seek(fraction) {
+    const clamped = Math.max(0, Math.min(0.999, fraction));
+    const song = this.fullTrackSong;
+    if (!song || !song.audioFile) return;
+
+    const entry = this.getOrCreateEntry(song.audioFile);
+
+    // If full buffer isn't decoded yet, await it so we know exact full duration and can seek anywhere
+    let targetBuffer = entry.fullBuffer;
+    if (!targetBuffer) {
+      targetBuffer = await this.ensureFullBuffer(song.audioFile);
     }
+    if (!targetBuffer) {
+      targetBuffer = entry.buffer;
+    }
+    if (!targetBuffer) return;
+
+    const dur = targetBuffer.duration;
+    const targetSec = clamped * dur;
+    this.fullTrackDuration = dur;
+    this.fullTrackOffset = targetSec;
+
+    // Immediately update UI bar & time text even if paused
+    if (this.fullTrackOnProgress) {
+      this.fullTrackOnProgress(clamped, targetSec, dur);
+    }
+
+    // If currently playing in modal, immediately jump audio playback to `targetSec`
+    if (this.isPlaying && this.isFullTrackMode) {
+      this.startBufferAtOffset(targetBuffer, targetSec);
+    }
+  }
+
+  stopActiveSourceOnly() {
     if (this.activeSource) {
       try {
         this.activeSource.onended = null;
@@ -437,10 +581,21 @@ export class AudioManager {
       } catch (e) {}
       this.activeGain = null;
     }
-    try {
-      this.audioElement.pause();
-      this.audioElement.currentTime = 0;
-    } catch (e) {}
+  }
+
+  stop() {
+    this.isPlaying = false;
+    this.isFullTrackMode = false;
+    this.fullTrackOffset = 0;
+    if (this.progressInterval) {
+      cancelAnimationFrame(this.progressInterval);
+      this.progressInterval = null;
+    }
+    if (this.stopTimer) {
+      clearTimeout(this.stopTimer);
+      this.stopTimer = null;
+    }
+    this.stopActiveSourceOnly();
     this.synth.stop();
   }
 }

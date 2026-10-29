@@ -365,7 +365,7 @@ function formatTime(sec) {
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
-function startModalFullAudio(song) {
+function startModalFullAudio(song, resumeFromPaused = false) {
   modalPlayIcon.classList.add('hidden');
   modalPauseIcon.classList.remove('hidden');
   modalPlayText.textContent = 'Đang phát';
@@ -379,16 +379,19 @@ function startModalFullAudio(song) {
     },
     () => {
       resetModalPlayerUI();
-    }
+    },
+    resumeFromPaused
   );
 }
 
 function toggleModalAudio() {
   if (audio.isPlaying) {
-    audio.stop();
-    resetModalPlayerUI();
+    audio.pauseFullTrack();
+    modalPlayIcon.classList.remove('hidden');
+    modalPauseIcon.classList.add('hidden');
+    modalPlayText.textContent = 'Tiếp tục phát';
   } else if (game.currentSong) {
-    startModalFullAudio(game.currentSong);
+    startModalFullAudio(game.currentSong, true);
   }
 }
 
