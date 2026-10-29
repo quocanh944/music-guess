@@ -109,6 +109,11 @@ function renderGameStage() {
   audio.stop();
   resetPlayhead();
 
+  // Preload Tier 1 (36KB ~ 2.8s) of current song + next Gauntlet song immediately
+  if (game.currentSong) {
+    audio.preloadSong(game.currentSong, game.getNextGauntletSong());
+  }
+
   const currentDiff = game.getCurrentDifficulty();
   const currentDuration = game.getCurrentDuration();
 
@@ -242,6 +247,13 @@ function toggleAudio() {
       resetPlayhead();
       currentDurationBadge.textContent = `${duration}s`;
       audioModeLabel.textContent = 'Nghe lại hoặc chọn câu trả lời';
+    },
+    (isLoading) => {
+      if (isLoading) {
+        audioModeLabel.textContent = '⏳ Đang tải đoạn nhạc...';
+      } else {
+        audioModeLabel.textContent = 'Đang phát đoạn nhạc...';
+      }
     }
   );
 }

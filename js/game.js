@@ -18,6 +18,7 @@ export class GameEngine {
     this.currentLevelIndex = 0; // 0 to 4 for Gauntlet
     this.currentStepIndex = 0;  // 0 to 4 for Snippet duration (0.1, 0.5, 2.0, 8.0, 15.0)
     this.currentSong = null;
+    this.gauntletQueue = [];    // Pre-selected 5 songs for Gauntlet mode
     this.history = [];          // list of guesses in current round
     this.status = 'playing';    // 'playing' | 'won' | 'lost'
     this.gauntletResults = [];  // Array of 5 outcomes in gauntlet mode
@@ -56,6 +57,7 @@ export class GameEngine {
     this.mode = GAME_MODES.GAUNTLET;
     this.currentLevelIndex = 0;
     this.gauntletResults = [];
+    this.gauntletQueue = DIFFICULTY_LEVELS.map(d => getRandomSong(d.id));
     this.loadLevelSong(0);
   }
 
@@ -84,10 +86,17 @@ export class GameEngine {
   loadLevelSong(levelIndex) {
     this.currentLevelIndex = levelIndex;
     const diff = DIFFICULTY_LEVELS[levelIndex].id;
-    this.currentSong = getRandomSong(diff);
+    this.currentSong = (this.gauntletQueue && this.gauntletQueue[levelIndex]) || getRandomSong(diff);
     this.currentStepIndex = 0;
     this.history = [];
     this.status = 'playing';
+  }
+
+  getNextGauntletSong() {
+    if (this.mode === GAME_MODES.GAUNTLET && this.currentLevelIndex < 4) {
+      return this.gauntletQueue?.[this.currentLevelIndex + 1] || null;
+    }
+    return null;
   }
 
   getCurrentDuration() {
@@ -252,7 +261,7 @@ export class GameEngine {
       lines.push(`Kết quả: ${icon} (${this.getCurrentDuration()}s)`);
     }
 
-    lines.push(`Chơi ngay tại: https://keocon.vn`);
+    lines.push(`Chơi ngay tại: https://keo-con.pages.dev`);
     return lines.join('\n');
   }
 }
