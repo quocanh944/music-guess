@@ -115,7 +115,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'easy',
     views: '36.0M',
-    lyricSnippet: 'Cho tôi lang thang quên ngày tháng, cho tôi quên đi bao lo toan muộn phiền...',
+    lyricSnippet: 'Cho tôi lang thang, quên ngày tháng. Cho tôi quên đi bao lo toan muộn phiền...',
     audioFile: 'assets/audio/cho-toi-lang-thang.mp3'
   },
   {
@@ -125,7 +125,7 @@ export const SONGS = [
     albumId: 'ngPrime2017',
     difficulty: 'easy',
     views: '35.0M',
-    lyricSnippet: 'Lần cuối, đi bên nhau cay đắng nhưng không đau...',
+    lyricSnippet: 'Lần cuối, đi bên em xót xa người ơi. Lần cuối, ta bên nhau có vui gì đâu...',
     audioFile: 'assets/audio/lan-cuoi.mp3'
   },
   {
@@ -135,7 +135,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'easy',
     views: '23.0M',
-    lyricSnippet: 'Em dạo này có còn xem phim một mình? Em dạo này có đồ ăn và shopping?...',
+    lyricSnippet: 'Em dạo này nhiều tiền không? Em dạo này còn đi xem phim một mình?...',
     audioFile: 'assets/audio/em-dao-nay.mp3'
   },
   {
@@ -155,7 +155,7 @@ export const SONGS = [
     albumId: 'gieo2022',
     difficulty: 'easy',
     views: '14.0M',
-    lyricSnippet: 'Thấy chưa, tôi đã bảo rồi mà. Cuộc đời này như một chuyến đi xa...',
+    lyricSnippet: 'Sẽ có ngày em thấy những chuyện buồn hôm ấy chỉ là chuyện cười hôm nay... Thấy chưa, thấy chưa em?',
     audioFile: 'assets/audio/thay-chua.mp3'
   },
   {
@@ -165,7 +165,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'easy',
     views: '11.0M',
-    lyricSnippet: 'Nắng qua hiên nhà, để quên ngày dài. Em nằm đây và tôi nằm đấy...',
+    lyricSnippet: 'Thế còn những gì em để quên nhà tôi, tôi để quên nhà em, ta để quên nhà nhau sau bao lần ghé chơi...',
     audioFile: 'assets/audio/de-quen.mp3'
   },
 
@@ -177,7 +177,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'medium',
     views: '8.8M',
-    lyricSnippet: 'Tôi hết thời rồi các bạn ơi, hào quang xưa nay chỉ còn dĩ vãng...',
+    lyricSnippet: 'Hết thời, tôi hết thời rồi các bạn ơi. Hết thời, ai rồi cũng phải hết thời thôi...',
     audioFile: 'assets/audio/het-thoi.mp3'
   },
   {
@@ -187,7 +187,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'medium',
     views: '7.7M',
-    lyricSnippet: 'Cho tôi đi theo với, nơi anh đi về. Về nơi đẹp trời hơn, tràn đầy ước mơ...',
+    lyricSnippet: 'Cho tôi đi theo với, nơi anh đi về. Về làm kem chuối, về làm kem dừa...',
     audioFile: 'assets/audio/cho-toi-di-theo.mp3'
   },
   {
@@ -197,7 +197,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'medium',
     views: '7.7M',
-    lyricSnippet: 'Cho tôi một ly nước ấm, cho tôi một ngày bình yên...',
+    lyricSnippet: 'Cho tôi một ly nước ấm, cho tôi một chỗ ngồi. Cho tôi xin một góc nhỏ...',
     audioFile: 'assets/audio/cho.mp3'
   },
   {
@@ -207,7 +207,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'medium',
     views: '6.6M',
-    lyricSnippet: 'Đốt hết những kỷ niệm cũ, đốt hết những bức thư tình...',
+    lyricSnippet: 'Đốt hết đi được không? Trang giấy này coi như trống... Kí ức về em sẽ cháy thật to, trí nhớ của tôi sẽ hóa tàn tro...',
     audioFile: 'assets/audio/dot.mp3'
   },
   {
@@ -217,7 +217,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'medium',
     views: '6.5M',
-    lyricSnippet: 'Bầu trời hôm nay thật xanh, cây lá ngoài vườn thật xanh...',
+    lyricSnippet: 'Một màu xanh xanh, chấm thêm vàng vàng... Bầu trời hôm nay thật xanh, cây lá ngoài vườn thật xanh...',
     audioFile: 'assets/audio/xanh.mp3'
   },
   {
@@ -237,7 +237,7 @@ export const SONGS = [
     albumId: 'gieo2022',
     difficulty: 'medium',
     views: '5.9M',
-    lyricSnippet: 'Em trang trí căn phòng của em bằng những bông hoa nhỏ...',
+    lyricSnippet: 'Đưa xuống một li, sang trái một tí... Và em lại trang trí căn nhà của chúng ta...',
     audioFile: 'assets/audio/em-trang-tri.mp3'
   },
   {
@@ -247,7 +247,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'medium',
     views: '5.8M',
-    lyricSnippet: 'Mấy khi ta lại được ngồi đây, hát cho nhau nghe những câu chuyện đời...',
+    lyricSnippet: 'Và đừng lo gì baby, mình không mấy khi gần nhau đâu đấy, còn xa lâu đấy...',
     audioFile: 'assets/audio/may-khi.mp3'
   },
   {
@@ -257,7 +257,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'medium',
     views: '5.7M',
-    lyricSnippet: 'Đôi chân đôi tay đôi mắt trái tim...',
+    lyricSnippet: 'Rơi, rơi, rơi cho vỡ thêm một lần. Vỡ, vỡ, vỡ cho nát tan một lần. Tan, tan, mong sao sẽ quen dần dần...',
     audioFile: 'assets/audio/nut.mp3'
   },
   {
@@ -267,7 +267,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'medium',
     views: '4.7M',
-    lyricSnippet: 'Em có chắc không khi nói yêu tôi? Trái tim bơ vơ lạc loài giữa biển khơi...',
+    lyricSnippet: 'Nhưng em có chắc không khi người ta đã từ chối em? Bám theo và người ta sẽ lừa dối em... Rằng tình yêu rất khác rebound...',
     audioFile: 'assets/audio/em-co-chac-khong.mp3'
   },
   {
@@ -277,7 +277,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'medium',
     views: '4.1M',
-    lyricSnippet: 'Những chuyện dở dang của tuổi trẻ, những ước mơ chưa thành...',
+    lyricSnippet: 'Những chuyện dở dang của một thời ngây dại...',
     audioFile: 'assets/audio/chuyen-do-dang.mp3'
   },
   {
@@ -287,7 +287,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'medium',
     views: '4.0M',
-    lyricSnippet: 'Này chàng pha chế, cho tôi một ly rượu mạnh...',
+    lyricSnippet: 'Này chàng bartender, pha cho tôi một ly thật cay để quên đi muộn phiền...',
     audioFile: 'assets/audio/bartender.mp3'
   },
   {
@@ -297,7 +297,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'medium',
     views: '3.0M',
-    lyricSnippet: 'Hay là ta cùng nhau đi đến một nơi thật xa...',
+    lyricSnippet: 'Hay là ta cứ thế này thôi, chẳng cần phải hứa hẹn ngày mai...',
     audioFile: 'assets/audio/hay-la.mp3'
   },
 
@@ -309,7 +309,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'hard',
     views: '2.8M',
-    lyricSnippet: 'Đêm nằm mơ thấy mình làm ma, bay lượn trên những mái nhà...',
+    lyricSnippet: 'Đêm nằm mơ thấy mình làm ma, bay qua từng mái nhà, nhìn em ngủ say...',
     audioFile: 'assets/audio/mo-lam-ma.mp3'
   },
   {
@@ -319,7 +319,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'hard',
     views: '2.5M',
-    lyricSnippet: 'Hôm nay tôi không làm gì cả, chỉ ngồi ngắm mây trôi...',
+    lyricSnippet: 'Hôm nay tôi không làm gì, tôi nằm đây ngắm mặt trời đi qua...',
     audioFile: 'assets/audio/khong-lam-gi.mp3'
   },
   {
@@ -329,7 +329,7 @@ export const SONGS = [
     albumId: 'ngPrime2017',
     difficulty: 'hard',
     views: '2.4M',
-    lyricSnippet: 'Một ngày không mưa bầu trời trong xanh, ta dắt tay nhau qua từng con phố...',
+    lyricSnippet: 'Một ngày không mưa ta cùng nhau đi dạo qua từng con phố nhỏ...',
     audioFile: 'assets/audio/mot-ngay-khong-mua.mp3'
   },
   {
@@ -339,7 +339,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'hard',
     views: '2.0M',
-    lyricSnippet: 'Giả vờ như ta chưa từng quen, giả vờ như chưa từng yêu...',
+    lyricSnippet: 'Giả vờ như ta chưa từng quen, giả vờ như chưa từng hẹn thề...',
     audioFile: 'assets/audio/gia-vo.mp3'
   },
   {
@@ -359,7 +359,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'hard',
     views: '1.9M',
-    lyricSnippet: 'Khuôn mặt mếu máo như đứa trẻ con...',
+    lyricSnippet: 'MẾU MÁO (T.T) - Khuôn mặt mếu máo như đứa trẻ con khi bị mắng...',
     audioFile: 'assets/audio/meu-mao.mp3'
   },
   {
@@ -369,7 +369,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'hard',
     views: '1.6M',
-    lyricSnippet: 'Mùa đông lạnh giá ta đi tìm hơi ấm...',
+    lyricSnippet: '(tôi) ĐI TRÚ ĐÔNG - Mùa đông lạnh giá ta đi tìm nơi trú đông...',
     audioFile: 'assets/audio/di-tru-dong.mp3'
   },
   {
@@ -379,7 +379,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'hard',
     views: '1.5M',
-    lyricSnippet: 'Nữ hoàng của những vở kịch cuộc đời...',
+    lyricSnippet: 'Cô nàng drama queen với những vở kịch cuộc đời đẫm nước mắt...',
     audioFile: 'assets/audio/drama-queen.mp3'
   },
   {
@@ -389,7 +389,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'hard',
     views: '1.5M',
-    lyricSnippet: 'Khói hương nghi ngút những ngày cuối năm...',
+    lyricSnippet: 'Thắp một nén hương hoá vàng cho những ngày cũ đã qua...',
     audioFile: 'assets/audio/thap-huong-hoa-vang.mp3'
   },
   {
@@ -399,7 +399,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'hard',
     views: '1.4M',
-    lyricSnippet: 'Vì ai ta thức trắng bao đêm, vì ai lệ rơi hoen bờ mi...',
+    lyricSnippet: 'Vì ai ta thức trắng bao đêm dài, vì ai lệ rơi ướt hoen bờ mi...',
     audioFile: 'assets/audio/vi-ai.mp3'
   },
   {
@@ -409,7 +409,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'hard',
     views: '1.3M',
-    lyricSnippet: 'Sáng rồi chuông reo giục ta thức dậy...',
+    lyricSnippet: 'Sáng rồi chuông reo giục ta thức dậy đón bình minh...',
     audioFile: 'assets/audio/chuong-bao-thuc.mp3'
   },
   {
@@ -419,7 +419,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'hard',
     views: '1.1M',
-    lyricSnippet: 'Thế giới chỉ có hai màu đen và trắng...',
+    lyricSnippet: 'MÀU (đen trắng) - Thế giới này chỉ có hai màu đen và trắng...',
     audioFile: 'assets/audio/mau-den-trang.mp3'
   },
   {
@@ -429,7 +429,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'hard',
     views: '1.0M',
-    lyricSnippet: 'Bơi ngược dòng sông lên thượng nguồn, đi tìm nguồn gốc...',
+    lyricSnippet: 'Cá hồi bơi ngược dòng sông, vượt qua ghềnh thác tìm về cội nguồn...',
     audioFile: 'assets/audio/ca-hoi.mp3'
   },
 
@@ -441,7 +441,7 @@ export const SONGS = [
     albumId: 'ngPrime2017',
     difficulty: 'expert',
     views: '950K',
-    lyricSnippet: 'Chú mèo hoang lang thang góc phố vắng...',
+    lyricSnippet: 'Chú mèo hoang lang thang góc phố vắng tìm miếng ăn...',
     audioFile: 'assets/audio/meo-hoang.mp3'
   },
   {
@@ -461,7 +461,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'expert',
     views: '807K',
-    lyricSnippet: 'Bé con ơi ngủ ngoan trong nôi êm...',
+    lyricSnippet: '(bé) - Bé con ơi đừng khóc nữa, ngủ ngoan trong nôi êm...',
     audioFile: 'assets/audio/be.mp3'
   },
   {
@@ -471,7 +471,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'expert',
     views: '742K',
-    lyricSnippet: 'Just be cool, baby be cool...',
+    lyricSnippet: 'Just be cool, baby be cool, đừng lo âu nhiều...',
     audioFile: 'assets/audio/be-cool.mp3'
   },
   {
@@ -481,7 +481,7 @@ export const SONGS = [
     albumId: 'ngPrime2017',
     difficulty: 'expert',
     views: '731K',
-    lyricSnippet: 'Kho báu chôn sâu dưới lòng đất đá...',
+    lyricSnippet: 'Rồi tôi cứ đi suốt đêm ngày, cho tới khi tôi quên đường về. Rồi tôi cứ đi khắp thiên hạ, tôi cứ đi tìm kho báu...',
     audioFile: 'assets/audio/kho-bau.mp3'
   },
   {
@@ -491,7 +491,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'expert',
     views: '613K',
-    lyricSnippet: 'Khắp xung quanh ta xe cộ ngược xuôi...',
+    lyricSnippet: 'Khắp xung quanh ta xe cộ ngược xuôi trên đường phố quen...',
     audioFile: 'assets/audio/khap-xung-quanh.mp3'
   },
   {
@@ -501,7 +501,7 @@ export const SONGS = [
     albumId: 'album3_2019',
     difficulty: 'expert',
     views: '440K',
-    lyricSnippet: 'Sau đây là bản tin dự báo thời tiết...',
+    lyricSnippet: 'Sau đây là dự báo thời tiết cho các vùng vào ngày mai...',
     audioFile: 'assets/audio/du-bao-thoi-tiet.mp3'
   },
   {
@@ -511,7 +511,7 @@ export const SONGS = [
     albumId: 'ngPrime2017',
     difficulty: 'expert',
     views: '421K',
-    lyricSnippet: 'Xin cho tôi một lần được làm lại...',
+    lyricSnippet: 'Xin cho tôi một lần được nói hết những tâm tư chôn giấu...',
     audioFile: 'assets/audio/xin-cho-toi.mp3'
   },
 
@@ -523,7 +523,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'impossible',
     views: '356K',
-    lyricSnippet: 'À ơi khúc ca ru con thời thơ ấu...',
+    lyricSnippet: 'À ơi khúc ca ru con ngủ ngon trong tiếng ve kêu hè về...',
     audioFile: 'assets/audio/a-oi.mp3'
   },
   {
@@ -533,7 +533,7 @@ export const SONGS = [
     albumId: 'ngot2016',
     difficulty: 'impossible',
     views: '192K',
-    lyricSnippet: 'Những chuyến phiêu lưu kỳ thú của tuổi thanh xuân...',
+    lyricSnippet: 'Những chuyến phiêu lưu kỳ thú của tuổi trẻ đầy hoài bão...',
     audioFile: 'assets/audio/nhung-chuyen-phieu-luu.mp3'
   },
   {
@@ -543,7 +543,7 @@ export const SONGS = [
     albumId: 'singles',
     difficulty: 'impossible',
     views: '155K',
-    lyricSnippet: 'Bản phối acoustic fingerstyle mộc mạc...',
+    lyricSnippet: '(Bản phối guitar acoustic fingerstyle mộc mạc - Chí Hùng biểu diễn)',
     audioFile: 'assets/audio/xanh-fingerstyle.mp3'
   }
 ];
