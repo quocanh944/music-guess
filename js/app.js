@@ -291,7 +291,13 @@ function handleSkip() {
 function showRevealModal(won, song, duration) {
   const album = ALBUMS[song.albumId] || ALBUMS.ngot2016;
 
-  revealCoverImg.src = album.cover;
+  // Use authentic YouTube video thumbnail, fallback to album cover
+  const thumbPath = `assets/thumbnails/${song.id}.jpg`;
+  revealCoverImg.src = thumbPath;
+  revealCoverImg.onerror = () => {
+    revealCoverImg.src = album.cover;
+  };
+
   revealSongTitle.textContent = song.title;
   revealAlbumInfo.textContent = `Album: ${album.name} (${album.year})`;
   revealViewsBadge.textContent = `👁️ ${song.views || 'N/A'} lượt nghe`;
@@ -458,9 +464,10 @@ function handleSearchInput(e) {
     const item = document.createElement('button');
     item.type = 'button';
     item.className = 'w-full p-3 text-left hover:bg-white/10 flex items-center space-x-3 border-b border-white/5 transition-colors focus:bg-white/10 focus:outline-none';
+    const thumbSrc = `assets/thumbnails/${song.id}.jpg`;
     item.innerHTML = `
-      <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white/10 border border-white/10">
-        <img src="${album.cover}" alt="${album.name}" class="w-full h-full object-cover"/>
+      <div class="w-12 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white/10 border border-white/10">
+        <img src="${thumbSrc}" onerror="this.src='${album.cover}'" alt="${song.title}" class="w-full h-full object-cover"/>
       </div>
       <div class="flex-1 min-w-0">
         <div class="font-bold text-sm text-white truncate">${song.title}</div>
