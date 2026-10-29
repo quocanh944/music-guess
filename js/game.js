@@ -261,7 +261,7 @@ export class GameEngine {
       lines.push(`Kết quả: ${icon} (${this.getCurrentDuration()}s)`);
     }
 
-    lines.push(`Chơi ngay tại: https://keo-con.pages.dev`);
+    lines.push(`Chơi ngay tại: https://keo-con.01112003.xyz`);
     return lines.join('\n');
   }
 }
