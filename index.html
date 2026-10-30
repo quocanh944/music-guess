@@ -29,7 +29,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=20261030b" />
 </head>
 <body class="bg-[#080c10] text-slate-100 min-h-screen flex flex-col justify-between selection:bg-green-500 selection:text-black">
 
@@ -192,7 +192,10 @@
           id="songSearchInput"
           placeholder="Tìm tên bài hát của Ngọt (vd: Em Dạo Này, Lần Cuối...)"
           autocomplete="off"
-          class="w-full pl-11 pr-24 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 text-sm font-medium transition-all"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          class="w-full pl-11 pr-12 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 text-base sm:text-sm font-medium transition-all"
         />
         <button id="clearSearchBtn" class="hidden absolute right-4 text-slate-400 hover:text-white p-1">
           ✕
@@ -200,7 +203,7 @@
       </div>
 
       <!-- Autocomplete Dropdown List -->
-      <div id="searchResultsList" class="hidden absolute left-0 right-0 top-full mt-2 rounded-2xl glass-dropdown overflow-hidden z-30 max-h-72 overflow-y-auto">
+      <div id="searchResultsList" class="hidden absolute left-0 right-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 rounded-2xl glass-dropdown overflow-hidden z-30 max-h-56 sm:max-h-72 overflow-y-auto">
         <!-- Results populated dynamically -->
       </div>
     </div>
@@ -386,6 +389,6 @@
   </footer>
 
   <!-- Application Logic -->
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=20261030b"></script>
 </body>
 </html>

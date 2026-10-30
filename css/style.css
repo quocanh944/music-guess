@@ -8,12 +8,25 @@
   --impossible-color: #a855f7;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  touch-action: manipulation;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: #080c10;
   color: #f1f5f9;
   user-select: none;
+  -webkit-user-select: none;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 /* Glassmorphism containers */

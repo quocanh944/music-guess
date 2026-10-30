@@ -2,7 +2,7 @@
  * GAME ENGINE
  * State management for Gauntlet (5 Levels), Heardle, and Free Play modes.
  */
-import { SONGS, DIFFICULTY_LEVELS, SNIPPET_DURATIONS, getRandomSong, getSongById, getSongsByDifficulty } from './songs.js';
+import { SONGS, DIFFICULTY_LEVELS, SNIPPET_DURATIONS, getRandomSong, getSongById, getSongsByDifficulty } from './songs.js?v=20261030b';
 
 export const GAME_MODES = {
   GAUNTLET: 'gauntlet',

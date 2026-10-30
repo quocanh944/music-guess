@@ -2,10 +2,10 @@
  * MAIN APP CONTROLLER
  * Connects GameEngine, AudioManager, Search, and UI DOM elements.
  */
-import { GameEngine, GAME_MODES } from './game.js';
-import { AudioManager } from './audio.js';
-import { searchSongs } from './search.js';
-import { SONGS, ALBUMS, DIFFICULTY_LEVELS, SNIPPET_DURATIONS } from './songs.js';
+import { GameEngine, GAME_MODES } from './game.js?v=20261030b';
+import { AudioManager } from './audio.js?v=20261030b';
+import { searchSongs } from './search.js?v=20261030b';
+import { SONGS, ALBUMS, DIFFICULTY_LEVELS, SNIPPET_DURATIONS } from './songs.js?v=20261030b';
 
 // Initialize Core Subsystems
 const game = new GameEngine();
@@ -97,9 +97,9 @@ let selectedSongId = null;
 // INITIALIZATION
 // ==========================================
 function init() {
+  setupEventListeners();
   game.startGauntlet();
   renderGameStage();
-  setupEventListeners();
 }
 
 // ==========================================
@@ -110,8 +110,13 @@ function renderGameStage() {
   resetPlayhead();
 
   // Preload Tier 1 (36KB ~ 2.8s) of current song + next Gauntlet song immediately
-  if (game.currentSong) {
-    audio.preloadSong(game.currentSong, game.getNextGauntletSong());
+  if (game.currentSong && typeof audio.preloadSong === 'function') {
+    try {
+      const nextSong = typeof game.getNextGauntletSong === 'function' ? game.getNextGauntletSong() : null;
+      audio.preloadSong(game.currentSong, nextSong);
+    } catch (e) {
+      console.warn('Preload error:', e);
+    }
   }
 
   const currentDiff = game.getCurrentDifficulty();
@@ -493,6 +498,9 @@ function handleSearchInput(e) {
       </span>
     `;
 
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+    });
     item.addEventListener('click', () => {
       selectSong(song);
     });
@@ -550,11 +558,25 @@ function setupEventListeners() {
 
   // Modal Audio Player
   modalPlayBtn.addEventListener('click', toggleModalAudio);
-  modalProgressBarBg.addEventListener('click', (e) => {
+  const handleSeekEvent = (clientX) => {
     const rect = modalProgressBarBg.getBoundingClientRect();
-    const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    if (!rect.width) return;
+    const fraction = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     audio.seek(fraction);
+  };
+  modalProgressBarBg.addEventListener('click', (e) => {
+    handleSeekEvent(e.clientX);
   });
+  modalProgressBarBg.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+      handleSeekEvent(e.touches[0].clientX);
+    }
+  }, { passive: true });
+  modalProgressBarBg.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+      handleSeekEvent(e.touches[0].clientX);
+    }
+  }, { passive: true });
 
   // Search
   songSearchInput.addEventListener('input', handleSearchInput);

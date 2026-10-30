@@ -8,7 +8,7 @@
  * Tier 3 (Full Track Web Audio Buffer): Decodes the full track in the background
  *        for 100% instant, glitch-free seeking (fast-forward/rewind) in the Reveal Modal.
  */
-import { NgotSynthesizer } from './synth.js';
+import { NgotSynthesizer } from './synth.js?v=20261030b';
 
 // At 96kbps (12KB/sec):
 // 36KB = ~3.0 seconds (covers 0.1s, 0.5s, 2.0s snippets)
@@ -23,6 +23,10 @@ export class AudioManager {
     this.offlineDecodeCtx = null;
     this.activeSource = null;
     this.activeGain = null;
+
+    this._webAudioUnlocked = false;
+    this._html5Unlocked = false;
+    this._silentAudioEl = null;
 
     this.isPlaying = false;
     this.isFullTrackMode = false;
@@ -41,6 +45,77 @@ export class AudioManager {
 
     // Cache of url -> { buffer, fullBuffer, maxDuration, tier1Promise, tier2Promise, fullPromise, failed }
     this.bufferCache = new Map();
+
+    // Auto-unlock iOS Safari AudioContext & Playback AudioSession on first touch/click anywhere
+    this._setupiOSUnlockListeners();
+  }
+
+  _setupiOSUnlockListeners() {
+    if (typeof window === 'undefined') return;
+    const unlockHandler = () => {
+      this.unlockiOSAudio();
+      if (this._webAudioUnlocked && this._html5Unlocked) {
+        window.removeEventListener('touchstart', unlockHandler, true);
+        window.removeEventListener('touchend', unlockHandler, true);
+        window.removeEventListener('click', unlockHandler, true);
+      }
+    };
+    window.addEventListener('touchstart', unlockHandler, { capture: true, passive: true });
+    window.addEventListener('touchend', unlockHandler, { capture: true, passive: true });
+    window.addEventListener('click', unlockHandler, { capture: true, passive: true });
+  }
+
+  /**
+   * Synchronously unlocks iOS Safari Web Audio API and forces Playback AudioSession
+   * so audio plays even when the iPhone hardware Silent/Mute switch is ON.
+   */
+  unlockiOSAudio() {
+    // 1. iOS 17+ AudioSession API: set 'playback' to bypass Silent Switch
+    try {
+      if (typeof navigator !== 'undefined' && navigator.audioSession && navigator.audioSession.type !== 'playback') {
+        navigator.audioSession.type = 'playback';
+      }
+    } catch (e) {}
+
+    // 2. Initialize & resume AudioContext synchronously inside user gesture
+    const ctx = this.getAudioContext();
+    if (ctx && (ctx.state === 'suspended' || ctx.state === 'interrupted')) {
+      ctx.resume().catch(() => {});
+    }
+
+    // 3. Play a 1-sample silent buffer synchronously to wake up iOS WebKit audio hardware
+    if (!this._webAudioUnlocked && ctx) {
+      try {
+        const silentBuf = ctx.createBuffer(1, 1, 22050);
+        const src = ctx.createBufferSource();
+        src.buffer = silentBuf;
+        src.connect(ctx.destination);
+        src.start(0);
+        this._webAudioUnlocked = true;
+      } catch (e) {}
+    }
+
+    // 4. Play a tiny silent HTML5 <audio> clip once so iOS < 17 switches AVAudioSession
+    //    from Ambient (muted by Silent switch) to Playback
+    if (!this._html5Unlocked && typeof Audio !== 'undefined') {
+      try {
+        if (!this._silentAudioEl) {
+          this._silentAudioEl = new Audio(
+            'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA'
+          );
+          this._silentAudioEl.setAttribute('playsinline', 'true');
+          this._silentAudioEl.volume = 0.01;
+        }
+        const p = this._silentAudioEl.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            this._html5Unlocked = true;
+          }).catch(() => {});
+        } else {
+          this._html5Unlocked = true;
+        }
+      } catch (e) {}
+    }
   }
 
   /**
@@ -51,7 +126,7 @@ export class AudioManager {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       this.audioCtx = new AudioContextClass();
     }
-    if (this.audioCtx.state === 'suspended') {
+    if (this.audioCtx.state === 'suspended' || this.audioCtx.state === 'interrupted') {
       this.audioCtx.resume().catch(() => {});
     }
     return this.audioCtx;
@@ -64,10 +139,48 @@ export class AudioManager {
   getDecodeContext() {
     if (this.audioCtx) return this.audioCtx;
     if (!this.offlineDecodeCtx) {
-      const OfflineCtx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-      this.offlineDecodeCtx = new OfflineCtx(2, 1, 48000);
+      try {
+        const OfflineCtx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+        this.offlineDecodeCtx = new OfflineCtx(2, 44100, 44100);
+      } catch (e) {
+        return this.getAudioContext();
+      }
     }
     return this.offlineDecodeCtx;
+  }
+
+  /**
+   * Cross-browser & iOS Safari compatible decodeAudioData wrapper
+   * (supports both Promise-based and legacy WebKit callback-based decodeAudioData)
+   */
+  decodeBufferWithContext(arrayBuffer) {
+    const runDecode = (ctx) => new Promise((resolve, reject) => {
+      try {
+        const copy = arrayBuffer.slice(0);
+        let settled = false;
+        const onSuccess = (decoded) => {
+          if (!settled) { settled = true; resolve(decoded); }
+        };
+        const onError = (err) => {
+          if (!settled) { settled = true; reject(err || new Error('decodeAudioData error')); }
+        };
+        const res = ctx.decodeAudioData(copy, onSuccess, onError);
+        if (res && typeof res.then === 'function') {
+          res.then(onSuccess).catch(onError);
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+    const primaryCtx = this.getDecodeContext();
+    return runDecode(primaryCtx).catch(() => {
+      const fallbackCtx = this.getAudioContext();
+      if (fallbackCtx !== primaryCtx) {
+        return runDecode(fallbackCtx);
+      }
+      throw new Error('decodeAudioData failed on all contexts');
+    });
   }
 
   /**
@@ -128,9 +241,7 @@ export class AudioManager {
    */
   async decodeSlice(url, maxBytes) {
     const arrayBuffer = await this.fetchAudioSlice(url, maxBytes);
-    const ctx = this.getDecodeContext();
-    const copy = arrayBuffer.slice(0);
-    return await ctx.decodeAudioData(copy);
+    return await this.decodeBufferWithContext(arrayBuffer);
   }
 
   /**
@@ -140,9 +251,7 @@ export class AudioManager {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const arrayBuffer = await res.arrayBuffer();
-    const ctx = this.getDecodeContext();
-    const copy = arrayBuffer.slice(0);
-    return await ctx.decodeAudioData(copy);
+    return await this.decodeBufferWithContext(arrayBuffer);
   }
 
   getOrCreateEntry(url) {
@@ -191,8 +300,11 @@ export class AudioManager {
           return audioBuffer;
         })
         .catch(err => {
-          console.warn('Tier 1 preload failed, trying Tier 2:', err);
-          return this.ensureTier2(url);
+          console.warn('Tier 1 preload failed, falling back to full buffer:', err);
+          if (nextSong && nextSong.audioFile) {
+            this.preloadTier1Only(nextSong);
+          }
+          return this.ensureFullBuffer(url);
         });
     } else if (!entry.tier2Promise) {
       this.ensureTier2(url);
@@ -218,7 +330,9 @@ export class AudioManager {
         }
         return audioBuffer;
       })
-      .catch(() => {});
+      .catch(() => {
+        return this.ensureFullBuffer(url);
+      });
   }
 
   /**
@@ -236,8 +350,8 @@ export class AudioManager {
           return audioBuffer;
         })
         .catch(err => {
-          console.warn('Tier 2 preload failed:', err);
-          return null;
+          console.warn('Tier 2 preload failed, falling back to full buffer:', err);
+          return this.ensureFullBuffer(url);
         });
     }
     return entry.tier2Promise;
@@ -268,13 +382,16 @@ export class AudioManager {
    * Plays a snippet of the song for `duration` seconds using sample-accurate Web Audio API
    */
   async playSnippet(song, duration, onProgress, onEnd, onLoadingChange) {
+    // Synchronously unlock iOS Safari AudioContext & Playback AudioSession inside user gesture
+    this.unlockiOSAudio();
+
     this.stop();
     this.isPlaying = true;
     this.isFullTrackMode = false;
     this.currentDuration = duration;
 
     const ctx = this.getAudioContext();
-    if (ctx.state === 'suspended') {
+    if (ctx.state === 'suspended' || ctx.state === 'interrupted') {
       await ctx.resume().catch(() => {});
     }
 
@@ -293,6 +410,9 @@ export class AudioManager {
           } else {
             await this.ensureTier2(song.audioFile);
           }
+          if (!entry.buffer || entry.maxDuration < duration) {
+            await this.ensureFullBuffer(song.audioFile);
+          }
           if (entry.buffer) {
             targetBuffer = entry.buffer;
           }
@@ -307,6 +427,9 @@ export class AudioManager {
 
     if (targetBuffer) {
       try {
+        if (ctx.state === 'suspended' || ctx.state === 'interrupted') {
+          await ctx.resume().catch(() => {});
+        }
         const source = ctx.createBufferSource();
         const gainNode = ctx.createGain();
 
@@ -404,6 +527,9 @@ export class AudioManager {
     this.stopActiveSourceOnly();
 
     const ctx = this.getAudioContext();
+    if (ctx.state === 'suspended' || ctx.state === 'interrupted') {
+      ctx.resume().catch(() => {});
+    }
     const clampedOffset = Math.max(0, Math.min(offsetSec, buffer.duration - 0.05));
 
     const source = ctx.createBufferSource();
@@ -455,6 +581,8 @@ export class AudioManager {
    * so seeking (fast-forward / rewind) is 100% instant and never resets to 0:00.
    */
   async playFullTrack(song, onProgress, onEnd, resumeFromPaused = false) {
+    this.unlockiOSAudio();
+
     const isSameSong = this.fullTrackSong && song && this.fullTrackSong.id === song.id;
     const startOffset = (resumeFromPaused && isSameSong && this.fullTrackOffset > 0)
       ? this.fullTrackOffset
@@ -474,7 +602,7 @@ export class AudioManager {
     this.fullTrackOnEnd = onEnd;
 
     const ctx = this.getAudioContext();
-    if (ctx.state === 'suspended') {
+    if (ctx.state === 'suspended' || ctx.state === 'interrupted') {
       await ctx.resume().catch(() => {});
     }
 
@@ -534,6 +662,7 @@ export class AudioManager {
    * Instant, sample-accurate seek to `fraction` (0.0 -> 1.0) of the full track
    */
   async seek(fraction) {
+    this.unlockiOSAudio();
     const clamped = Math.max(0, Math.min(0.999, fraction));
     const song = this.fullTrackSong;
     if (!song || !song.audioFile) return;
